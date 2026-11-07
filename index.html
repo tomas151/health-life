@@ -1,0 +1,3716 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="vitals">
+  <title>건강한 삶을 위하여 - 평생 건강 관리 포털</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Figtree:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Approved Lucide Icons -->
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    /* Design Tokens - Vitals Style with Soft Mint/Blue Pastel Background (#F0F4F8) */
+    :root {
+      color-scheme: light;
+      
+      /* Backgrounds & Surfaces */
+      --background: #f0f4f8;               /* User specified soft mint/blue pastel tone */
+      --card-bg: #ffffff;
+      --surface-container-low: #e8f2f5;    /* Very soft teal/mint wash */
+      --surface-container: #dcecf0;        /* Light teal accent surface */
+      --surface-container-high: #cee3e9;   /* Hover and selected state */
+
+      /* Typography Colors */
+      --on-surface: #1b2b33;               /* Deep slate blue */
+      --on-surface-variant: #46585f;       /* Muted slate */
+      --on-surface-subtle: #6e828a;
+
+      /* Borders & Dividers */
+      --outline: #7b9198;
+      --outline-variant: #d5e3e5;
+
+      /* Accents & Status */
+      --primary: #0f7c8a;                  /* Calm clinical teal */
+      --on-primary: #ffffff;
+      --primary-container: #e3f1f3;
+      --on-primary-container: #0a5560;
+      
+      --secondary: #1d5e3a;                /* Deep healthy green */
+      --tertiary: #2e7d4f;                 /* Vibrant healthy green */
+      --tertiary-container: #e8f5ed;
+      --on-tertiary-container: #1b5e34;
+
+      --warning: #b86e00;                  /* Amber warning */
+      --warning-container: #fef5e7;
+      --on-warning-container: #7d4800;
+
+      --error: #b3261e;                    /* Alert / obesity warning */
+      --error-container: #fce8e6;
+      --on-error-container: #6e100a;
+
+      /* Data series tokens */
+      --data-underweight: #2b7da8;
+      --data-normal: #2e7d4f;
+      --data-overweight: #d97706;
+      --data-obese1: #dc2626;
+      --data-obese2: #991b1b;
+
+      /* Typography Families */
+      --font-headline: 'Noto Sans KR', 'Figtree', sans-serif;
+      --font-body: 'Noto Sans KR', 'Atkinson Hyperlegible', sans-serif;
+      --font-label: 'Noto Sans KR', 'Figtree', sans-serif;
+
+      /* Radii */
+      --rounded-sm: 0.375rem;
+      --rounded: 0.625rem;
+      --rounded-lg: 0.875rem;
+      --rounded-xl: 1.25rem;
+      --rounded-full: 9999px;
+
+      /* Spacing Scale */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.25rem;
+      --space-2xl: 3.5rem;
+
+      /* Shadow & Effects */
+      --card-lift: 0 2px 4px rgba(27, 43, 51, 0.04), 0 10px 24px rgba(27, 43, 51, 0.06);
+      --card-lift-hover: 0 4px 8px rgba(27, 43, 51, 0.06), 0 14px 30px rgba(27, 43, 51, 0.09);
+      --top-bar: 4px solid var(--primary);
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      overflow-x: clip;
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Accessibility Focus Ring */
+    :focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    /* Top Navigation Header */
+    header {
+      position: static !important;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--outline-variant);
+      box-shadow: 0 2px 8px rgba(27, 43, 51, 0.03);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .brand-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--rounded);
+      background: var(--primary-container);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-title {
+      font-family: var(--font-headline);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--on-surface-variant);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--rounded-sm);
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: var(--surface-container-low);
+      color: var(--primary);
+    }
+
+    /* Page Grid Layout */
+    .page-grid {
+      display: grid;
+      gap: var(--space-2xl);
+      padding: var(--space-xl) var(--space-lg) var(--space-2xl);
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Section Headers */
+    .section-header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border-radius: var(--rounded-full);
+      margin-bottom: var(--space-xs);
+    }
+
+    .section-title {
+      font-family: var(--font-headline);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      line-height: 1.3;
+      margin-bottom: 0.35rem;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--on-surface-variant);
+      max-width: 75ch;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--card-lift);
+      position: relative;
+    }
+
+    /* Hero Section */
+    .hero-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbfd 100%);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-xl);
+      padding: var(--space-xl);
+      box-shadow: var(--card-lift);
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--tertiary) 100%);
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .hero-title {
+      font-family: var(--font-headline);
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--on-surface);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-lead {
+      font-size: 1.125rem;
+      color: var(--on-surface-variant);
+      line-height: 1.65;
+      font-weight: 400;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-xs);
+    }
+
+    .hero-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--surface-container-low);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--rounded-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .hero-visual-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-svg-container {
+      width: 100%;
+      max-width: 480px;
+      filter: drop-shadow(0 12px 24px rgba(27, 43, 51, 0.08));
+    }
+
+    /* Calculator Section */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: var(--space-xl);
+    }
+
+    .input-group {
+      margin-bottom: var(--space-md);
+    }
+
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--space-xs);
+    }
+
+    .input-label {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .input-val-badge {
+      font-family: var(--font-label);
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.125rem;
+    }
+
+    .range-edit-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .range-edit-row .range-slider { flex: 1; min-width: 0; }
+    .direct-edit {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex: 0 0 auto;
+      color: var(--on-surface-variant);
+      font-size: 0.85rem;
+    }
+    .direct-edit input {
+      width: 76px;
+      padding: 7px 8px;
+      border: 1px solid var(--outline, #cbd5e1);
+      border-radius: 8px;
+      background: var(--surface, #fff);
+      color: var(--on-surface, #222);
+      font: inherit;
+      font-weight: 700;
+      text-align: right;
+    }
+    .direct-edit input:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
+    @media (max-width: 420px) {
+      .range-edit-row { gap: 7px; }
+      .direct-edit input { width: 66px; }
+    }
+
+    .range-slider {
+      width: 100%;
+      height: 8px;
+      border-radius: var(--rounded-full);
+      background: var(--surface-container);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .segmented-control {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xs);
+      background: var(--surface-container-low);
+      padding: 4px;
+      border-radius: var(--rounded);
+    }
+
+    .segmented-btn {
+      padding: 0.6rem;
+      border: none;
+      background: transparent;
+      border-radius: var(--rounded-sm);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .segmented-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(27, 43, 51, 0.08);
+    }
+
+    /* BMI Output Display Card */
+    .bmi-result-panel {
+      background: linear-gradient(145deg, #ffffff 0%, var(--surface-container-low) 100%);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .metric-headline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--outline-variant);
+      padding-bottom: var(--space-md);
+    }
+
+    .metric-title-group small {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-main-value {
+      font-family: var(--font-headline);
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+    }
+
+    .metric-main-value span {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--on-surface-variant);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--rounded-full);
+      font-size: 0.9375rem;
+      font-weight: 700;
+    }
+
+    .status-underweight { background: #e0f2fe; color: #0369a1; }
+    .status-normal { background: #dcfce7; color: #15803d; }
+    .status-overweight { background: #fef3c7; color: #b45309; }
+    .status-obese1 { background: #fee2e2; color: #b91c1c; }
+    .status-obese2 { background: #ffe4e6; color: #9f1239; }
+
+    /* Visual BMI Gauge Meter */
+    .gauge-wrapper {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .gauge-svg {
+      width: 100%;
+      max-width: 340px;
+      height: 120px;
+      overflow: visible;
+    }
+
+    .gauge-needle {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: 150px 120px;
+    }
+
+    .gauge-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 320px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--on-surface-subtle);
+      margin-top: 4px;
+    }
+
+    /* Comparison Sub-cards */
+    .stats-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: var(--space-sm);
+    }
+
+    .stat-mini-card {
+      background: var(--card-bg);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded);
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-mini-card .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+    }
+
+    .stat-mini-card .val {
+      font-family: var(--font-headline);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .stat-mini-card .note {
+      font-size: 0.75rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    /* Waist circumference alert pill */
+    .waist-alert-box {
+      border-radius: var(--rounded);
+      padding: var(--space-sm) var(--space-md);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      line-height: 1.4;
+    }
+    .waist-normal {
+      background: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+      border: 1px solid rgba(46, 125, 79, 0.2);
+    }
+    .waist-warning {
+      background: var(--warning-container);
+      color: var(--on-warning-container);
+      border: 1px solid rgba(184, 110, 0, 0.2);
+    }
+
+    /* Causes & Risks Section */
+    .tab-nav {
+      display: flex;
+      gap: var(--space-xs);
+      border-bottom: 2px solid var(--surface-container);
+      margin-bottom: var(--space-lg);
+    }
+
+    .tab-btn {
+      padding: 0.65rem 1.25rem;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 700;
+    }
+
+    .causes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--card-lift);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .info-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--card-lift-hover);
+    }
+
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .info-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--rounded);
+      background: var(--surface-container-low);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-card-title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .info-card-text {
+      font-size: 0.9375rem;
+      color: var(--on-surface-variant);
+      line-height: 1.6;
+    }
+
+    .info-card-bullets {
+      margin-top: var(--space-sm);
+      padding-left: 1.25rem;
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+    }
+
+    .info-card-bullets li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* Energy Needs Calculator */
+    .energy-planner-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .activity-selector-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .activity-option {
+      background: var(--card-bg);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .activity-option:hover {
+      background: var(--surface-container-low);
+      border-color: var(--primary);
+    }
+
+    .activity-option.active {
+      border: 2px solid var(--primary);
+      background: var(--primary-container);
+    }
+
+    .activity-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .activity-title {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .activity-desc {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+    }
+
+    .activity-coeff {
+      font-family: var(--font-label);
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.9375rem;
+      background: #ffffff;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--rounded-sm);
+      border: 1px solid var(--outline-variant);
+      white-space: nowrap;
+    }
+
+    .deficit-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xs);
+      margin-top: var(--space-md);
+    }
+
+    .deficit-btn {
+      padding: 0.6rem 0.4rem;
+      border: 1px solid var(--outline-variant);
+      background: var(--card-bg);
+      border-radius: var(--rounded);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .deficit-btn.active {
+      border-color: var(--tertiary);
+      background: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+      font-weight: 700;
+    }
+
+    .deficit-btn .title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      display: block;
+    }
+
+    .deficit-btn .sub {
+      font-size: 0.75rem;
+      opacity: 0.85;
+      display: block;
+    }
+
+    .calorie-summary-box {
+      background: linear-gradient(135deg, #ffffff 0%, var(--surface-container-low) 100%);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      position: relative;
+    }
+
+    .calorie-hero-stat {
+      text-align: center;
+      padding: var(--space-md) 0;
+      border-bottom: 1px dashed var(--outline-variant);
+    }
+
+    .calorie-hero-stat .label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      margin-bottom: 4px;
+    }
+
+    .calorie-hero-stat .big-num {
+      font-family: var(--font-headline);
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .calorie-hero-stat .unit {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+    }
+
+    .calorie-breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      padding: 0.35rem 0;
+    }
+
+    .calorie-breakdown-row strong {
+      color: var(--on-surface);
+    }
+
+    /* 6 Food Groups Grid */
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .food-card {
+      background: var(--card-bg);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--card-lift);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      border-top: 4px solid var(--primary);
+    }
+
+    .food-card.grain { border-top-color: #d97706; }
+    .food-card.meat { border-top-color: #dc2626; }
+    .food-card.veggie { border-top-color: #16a34a; }
+    .food-card.fruit { border-top-color: #9333ea; }
+    .food-card.dairy { border-top-color: #2563eb; }
+    .food-card.oil { border-top-color: #ca8a04; }
+
+    .food-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .food-title-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .food-badge-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--rounded-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      background: var(--surface-container-low);
+    }
+
+    .food-name {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .food-servings {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--rounded-full);
+      background: var(--surface-container);
+      color: var(--on-surface);
+    }
+
+    .food-serving-info {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded);
+      padding: var(--space-sm) var(--space-md);
+      font-size: 0.875rem;
+    }
+
+    .food-serving-info p {
+      margin-bottom: 2px;
+    }
+
+    .food-tip {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+
+    /* Hand Portion Guide Box */
+    .hand-guide-bar {
+      margin-top: var(--space-lg);
+      background: var(--card-bg);
+      border: 1px dashed var(--outline);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      align-items: center;
+    }
+
+    .hand-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .hand-icon {
+      font-size: 1.5rem;
+    }
+
+    .hand-text {
+      font-size: 0.875rem;
+    }
+
+    .hand-text strong {
+      display: block;
+      color: var(--primary);
+    }
+
+    /* 7-Day Meal Plan Section */
+    .meal-plan-controls {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .day-tabs {
+      display: flex;
+      gap: var(--space-xs);
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .day-tab-btn {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--outline-variant);
+      background: var(--card-bg);
+      border-radius: var(--rounded);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .day-tab-btn.active {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(15, 124, 138, 0.25);
+    }
+
+    .calorie-filter-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+    }
+
+    .cal-pill-btn {
+      padding: 0.4rem 0.85rem;
+      border: 1px solid var(--outline-variant);
+      background: var(--card-bg);
+      border-radius: var(--rounded-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cal-pill-btn.active {
+      background: var(--tertiary);
+      color: #ffffff;
+      border-color: var(--tertiary);
+    }
+
+    .meals-day-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .meal-box {
+      background: var(--card-bg);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--card-lift);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .meal-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--outline-variant);
+      padding-bottom: var(--space-xs);
+    }
+
+    .meal-timing {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .meal-cal-tag {
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 0.8125rem;
+      color: var(--primary);
+      background: var(--primary-container);
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--rounded-full);
+    }
+
+    .meal-items-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+    }
+
+    .meal-items-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .meal-items-list li::before {
+      content: '•';
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .meal-nutrition-bar {
+      margin-top: auto;
+      padding-top: var(--space-sm);
+      border-top: 1px dashed var(--outline-variant);
+      font-size: 0.75rem;
+      color: var(--on-surface-subtle);
+    }
+
+    .meal-plan-summary-card {
+      margin-top: var(--space-lg);
+      background: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .diet-macro-bars {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .macro-chip {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .macro-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-carb { background: #d97706; }
+    .dot-protein { background: #dc2626; }
+    .dot-fat { background: #16a34a; }
+
+    /* Exercise & Stress Section (Newly added based on Lesson 7) */
+    .lifestyle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .lifestyle-card {
+      background: var(--card-bg);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-xl);
+      padding: var(--space-xl);
+      box-shadow: var(--card-lift);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      position: relative;
+    }
+
+    .lifestyle-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      border-radius: var(--rounded-xl) var(--rounded-xl) 0 0;
+    }
+
+    .card-exercise::before { background: var(--tertiary); }
+    .card-stress::before { background: #5c5fb0; }
+
+    .lifestyle-head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .lifestyle-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--rounded);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .box-exercise { background: var(--tertiary-container); color: var(--tertiary); }
+    .box-stress { background: #eeeffb; color: #5c5fb0; }
+
+    .lifestyle-title {
+      font-family: var(--font-headline);
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .lifestyle-sub {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+    }
+
+    .lifestyle-item {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      margin-bottom: var(--space-xs);
+    }
+
+    .lifestyle-item-title {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .lifestyle-item-desc {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+      line-height: 1.55;
+    }
+
+    /* 4-7-8 Breathing Guide Interactive Widget */
+    .breathing-widget {
+      background: linear-gradient(145deg, #ffffff 0%, #f6f7fc 100%);
+      border: 1px solid #d9dcf2;
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-md);
+      margin-top: var(--space-sm);
+    }
+
+    .breathing-circle-wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .breathing-pulse-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(92, 95, 176, 0.12);
+      transition: transform 4s ease-in-out;
+      transform: scale(0.7);
+    }
+
+    .breathing-core {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #5c5fb0;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(92, 95, 176, 0.25);
+    }
+
+    .breathing-action-text {
+      font-size: 0.8125rem;
+      font-weight: 700;
+    }
+
+    .breathing-timer-num {
+      font-family: var(--font-headline);
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .breath-ctl-btn {
+      padding: 0.5rem 1.25rem;
+      background: #5c5fb0;
+      color: #ffffff;
+      border: none;
+      border-radius: var(--rounded-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .breath-ctl-btn:hover {
+      background: #4a4d96;
+      transform: scale(1.02);
+    }
+
+    /* Bottom Action Bar */
+    .bottom-action-section {
+      background: var(--card-bg);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--rounded-xl);
+      padding: var(--space-xl);
+      box-shadow: var(--card-lift);
+      text-align: center;
+      margin-top: var(--space-lg);
+    }
+
+    .action-header-group {
+      max-width: 600px;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .action-headline {
+      font-family: var(--font-headline);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--on-surface);
+      margin-bottom: 0.35rem;
+    }
+
+    .action-sub {
+      font-size: 0.9375rem;
+      color: var(--on-surface-variant);
+    }
+
+    .action-buttons-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--rounded);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+
+    .btn-primary-action {
+      background: var(--primary);
+      color: var(--on-primary);
+      box-shadow: 0 4px 12px rgba(15, 124, 138, 0.25);
+    }
+
+    .btn-primary-action:hover {
+      background: #0a5f6b;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(15, 124, 138, 0.35);
+    }
+
+    .btn-secondary-action {
+      background: var(--surface-container);
+      color: var(--on-primary-container);
+      border: 1px solid var(--outline-variant);
+    }
+
+    .btn-secondary-action:hover {
+      background: var(--surface-container-high);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-action {
+      background: #ffffff;
+      color: var(--on-surface);
+      border: 1px solid var(--outline);
+    }
+
+    .btn-outline-action:hover {
+      background: var(--surface-container-low);
+      transform: translateY(-2px);
+    }
+
+    /* Toast Notification */
+    .toast-popup {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #1b2b33;
+      color: #ffffff;
+      padding: 0.85rem 1.5rem;
+      border-radius: var(--rounded);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toast-popup.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Modal Viewer for Saved Report */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(27, 43, 51, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: var(--space-md);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--rounded-lg);
+      max-width: 640px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: var(--space-xl);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: var(--space-md);
+      right: var(--space-md);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--on-surface-variant);
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+    }
+
+    /* Footer */
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--outline-variant);
+      padding: var(--space-xl) var(--space-lg);
+      margin-top: var(--space-2xl);
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--on-surface-subtle);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+        padding: var(--space-lg);
+      }
+      .calc-grid, .energy-planner-grid, .lifestyle-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-visual-wrapper {
+        min-height: 240px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page-grid {
+        padding: var(--space-md);
+        gap: var(--space-xl);
+      }
+      .hero-title {
+        font-size: 1.75rem;
+      }
+      .section-title {
+        font-size: 1.375rem;
+      }
+      .action-buttons-group {
+        flex-direction: column;
+        width: 100%;
+      }
+      .btn-action {
+        width: 100%;
+      }
+      .nav-links {
+        display: none; /* simple compact mobile header */
+      }
+    }
+
+    /* Print Styles Optimization */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      header, .range-slider, .tab-nav, .breathing-widget, .action-buttons-group, footer, .toast-popup, .modal-overlay {
+        display: none !important;
+      }
+      .page-grid {
+        padding: 0;
+        gap: 1.5rem;
+      }
+      .card, .hero-card, .lifestyle-card, .bottom-action-section {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+      }
+      .hero-visual-wrapper {
+        display: none !important;
+      }
+      .hero-title {
+        font-size: 1.5rem !important;
+      }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header (Removed unwanted old titles and buttons as instructed) -->
+  <header>
+    <div class="nav-container">
+      <div class="brand-group">
+        <div class="brand-icon-wrap" aria-hidden="true">
+          <i data-lucide="heart-pulse"></i>
+        </div>
+        <div>
+          <div class="brand-title">건강한 삶을 위하여</div>
+          <div class="brand-sub">국민 건강 식생활 & 웰빙 라이프 가이드</div>
+        </div>
+      </div>
+      <nav aria-label="메인 메뉴">
+        <ul class="nav-links">
+          <li><a href="#calculator" class="nav-link">신체 지표 계산</a></li>
+          <li><a href="#risks" class="nav-link">비만과 건강</a></li>
+          <li><a href="#energy" class="nav-link">필요 열량</a></li>
+          <li><a href="#food-groups" class="nav-link">6대 식품군</a></li>
+          <li><a href="#meal-plan" class="nav-link">7일 웰빙 식단</a></li>
+          <li><a href="#lifestyle" class="nav-link">운동 & 스트레스</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-grid">
+    
+    <!-- Section 1: Hero Section -->
+    <section class="hero-card" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <div class="badge-pill">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          <span>평생 건강 웰빙 가이드</span>
+        </div>
+        <h1 id="hero-title" class="hero-title">
+          나를 위한 균형 잡힌 영양,<br>
+          <span>건강한 삶을 위하여</span>
+        </h1>
+        <p class="hero-lead">
+          건강한 삶을 위하여 - 나의 신체 지표를 정확히 이해하고, 활동량에 맞는 균형 잡힌 영양과 계획적인 식습관으로 완성하는 평생 건강 관리 포털입니다.
+        </p>
+        <div class="hero-pills">
+          <div class="hero-feature-item">
+            <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+            <span>실시간 BMI & 표준체중</span>
+          </div>
+          <div class="hero-feature-item">
+            <i data-lucide="flame" style="width: 16px; height: 16px;"></i>
+            <span>맞춤 에너지 지침</span>
+          </div>
+          <div class="hero-feature-item">
+            <i data-lucide="utensils" style="width: 16px; height: 16px;"></i>
+            <span>7일 균형 식단표</span>
+          </div>
+          <div class="hero-feature-item">
+            <i data-lucide="smile" style="width: 16px; height: 16px;"></i>
+            <span>운동 & 스트레스 케어</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warm Korean Family Meal SVG Visual -->
+      <div class="hero-visual-wrapper">
+        <svg class="hero-svg-container" viewBox="0 0 500 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="따뜻한 분위기 속에서 함께 건강한 한식을 즐기는 한국인 가족 일러스트">
+          <!-- Background glow & window -->
+          <circle cx="250" cy="180" r="160" fill="#E8F4F8" />
+          <path d="M70 290 Q250 250 430 290 L450 360 L50 360 Z" fill="#DDEBF1" opacity="0.6"/>
+          
+          <!-- Dining Table -->
+          <ellipse cx="250" cy="275" rx="200" ry="60" fill="#EADBCE" stroke="#D3C1AE" stroke-width="3"/>
+          <ellipse cx="250" cy="270" rx="190" ry="52" fill="#F7EFE9"/>
+          
+          <!-- Grandparent / Elder (Left back) -->
+          <g transform="translate(110, 110)">
+            <!-- Hair -->
+            <path d="M25 45 C15 20, 45 10, 65 30 C75 15, 90 25, 85 45 Z" fill="#9CA3AF"/>
+            <!-- Face -->
+            <circle cx="55" cy="50" r="24" fill="#FCD9BD"/>
+            <!-- Smiling eyes -->
+            <path d="M44 48 Q49 44 54 48" stroke="#5C4033" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <path d="M62 48 Q67 44 72 48" stroke="#5C4033" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <path d="M53 58 Q58 64 63 58" stroke="#E05D5D" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <!-- Clothes: Warm mint cardigan -->
+            <path d="M30 74 C15 88, 10 135, 10 135 L100 135 C100 135, 95 88, 80 74 Z" fill="#4B9E90"/>
+            <path d="M50 74 L55 135 M60 74 L55 135" stroke="#367368" stroke-width="2"/>
+          </g>
+
+          <!-- Mother (Center left) -->
+          <g transform="translate(180, 95)">
+            <!-- Hair -->
+            <path d="M25 50 C20 15, 75 12, 85 45 C95 65, 80 85, 75 90 C65 50, 40 45, 25 50 Z" fill="#3B2F2F"/>
+            <!-- Face -->
+            <circle cx="52" cy="54" r="23" fill="#FFE0C8"/>
+            <!-- Smile & Eyes -->
+            <path d="M42 53 Q47 49 52 53" stroke="#3B2F2F" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <path d="M59 53 Q64 49 69 53" stroke="#3B2F2F" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <circle cx="39" cy="59" r="4" fill="#F87171" opacity="0.4"/>
+            <circle cx="68" cy="59" r="4" fill="#F87171" opacity="0.4"/>
+            <path d="M49 62 Q55 69 61 62" stroke="#DC2626" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <!-- Apron / Blouse: Soft Coral Pastel -->
+            <path d="M28 77 C15 95, 12 145, 12 145 L92 145 C92 145, 89 95, 76 77 Z" fill="#F48B76"/>
+          </g>
+
+          <!-- Father (Right back) -->
+          <g transform="translate(285, 100)">
+            <!-- Hair -->
+            <path d="M25 42 C25 20, 75 20, 75 42 Z" fill="#262626"/>
+            <!-- Face -->
+            <circle cx="50" cy="52" r="24" fill="#FAD0B0"/>
+            <!-- Eyes & Glasses -->
+            <rect x="36" y="46" width="13" height="10" rx="3" fill="none" stroke="#0F7C8A" stroke-width="2"/>
+            <rect x="54" y="46" width="13" height="10" rx="3" fill="none" stroke="#0F7C8A" stroke-width="2"/>
+            <line x1="49" y1="51" x2="54" y2="51" stroke="#0F7C8A" stroke-width="2"/>
+            <path d="M48 63 Q52 68 57 63" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <!-- Clothes: Soft navy blue shirt -->
+            <path d="M24 76 C10 92, 8 145, 8 145 L92 145 C92 145, 90 92, 76 76 Z" fill="#3B82F6"/>
+          </g>
+
+          <!-- Child (Center front cheering) -->
+          <g transform="translate(210, 165)">
+            <!-- Ponytail/Hair -->
+            <path d="M25 35 C15 15, 65 15, 55 35 C65 30, 75 45, 60 55 C50 35, 30 35, 25 35 Z" fill="#2F241D"/>
+            <!-- Face -->
+            <circle cx="40" cy="40" r="19" fill="#FFE5D0"/>
+            <!-- Cheerful big smile -->
+            <circle cx="33" cy="38" r="2.2" fill="#2F241D"/>
+            <circle cx="47" cy="38" r="2.2" fill="#2F241D"/>
+            <circle cx="30" cy="44" r="3.5" fill="#FB7185" opacity="0.5"/>
+            <circle cx="50" cy="44" r="3.5" fill="#FB7185" opacity="0.5"/>
+            <path d="M35 44 Q40 52 45 44" stroke="#BE123C" stroke-width="2.5" stroke-linecap="round" fill="#FEE2E2"/>
+            <!-- Yellow sweatshirt -->
+            <path d="M20 59 C10 75, 8 105, 8 105 L72 105 C72 105, 70 75, 60 59 Z" fill="#FBBF24"/>
+          </g>
+
+          <!-- Korean Dishes on Table -->
+          <!-- Main Stew (Doenjang-jjigae in earthen pot Ttukbaegi) -->
+          <g transform="translate(230, 240)">
+            <ellipse cx="20" cy="15" rx="30" ry="14" fill="#374151"/>
+            <ellipse cx="20" cy="13" rx="26" ry="11" fill="#C2410C"/>
+            <!-- Tofu & veggies floating -->
+            <rect x="10" y="8" width="7" height="6" rx="1" fill="#FEF3C7"/>
+            <rect x="22" y="10" width="8" height="6" rx="1" fill="#FEF3C7"/>
+            <circle cx="18" cy="14" r="3" fill="#15803D"/>
+            <circle cx="28" cy="12" r="2.5" fill="#DC2626"/>
+            <!-- Steam -->
+            <path d="M12 4 Q16 -4 14 -12" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.6" fill="none"/>
+            <path d="M24 2 Q28 -6 26 -14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.6" fill="none"/>
+          </g>
+
+          <!-- Rice bowl 1 (Multigrain rice) -->
+          <g transform="translate(150, 260)">
+            <path d="M5 12 Q20 28 35 12 Z" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
+            <ellipse cx="20" cy="11" rx="15" ry="7" fill="#E5E7EB"/>
+            <!-- Purple-grain rice texture -->
+            <ellipse cx="20" cy="10" rx="14" ry="6" fill="#818CF8" opacity="0.4"/>
+            <circle cx="16" cy="9" r="1.5" fill="#4338CA"/>
+            <circle cx="23" cy="10" r="1.5" fill="#4338CA"/>
+          </g>
+
+          <!-- Rice bowl 2 -->
+          <g transform="translate(310, 260)">
+            <path d="M5 12 Q20 28 35 12 Z" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
+            <ellipse cx="20" cy="11" rx="15" ry="7" fill="#E5E7EB"/>
+            <ellipse cx="20" cy="10" rx="14" ry="6" fill="#818CF8" opacity="0.4"/>
+            <circle cx="17" cy="9" r="1.5" fill="#4338CA"/>
+            <circle cx="24" cy="10" r="1.5" fill="#4338CA"/>
+          </g>
+
+          <!-- Grilled Mackerel Plate (Fish) -->
+          <g transform="translate(175, 235)">
+            <ellipse cx="25" cy="10" rx="24" ry="9" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+            <!-- Fish silhouette with golden grill marks -->
+            <path d="M8 10 Q25 4 42 10 Q25 15 8 10 Z" fill="#475569"/>
+            <path d="M12 9 Q25 6 38 9" stroke="#E2E8F0" stroke-width="1"/>
+            <line x1="20" y1="7" x2="23" y2="13" stroke="#B45309" stroke-width="1.5"/>
+            <line x1="26" y1="7" x2="29" y2="13" stroke="#B45309" stroke-width="1.5"/>
+            <!-- Lemon slice -->
+            <circle cx="38" cy="10" r="3" fill="#FACC15"/>
+          </g>
+
+          <!-- Side Dishes: Kimchi & Green Namul -->
+          <g transform="translate(290, 235)">
+            <!-- Kimchi bowl -->
+            <circle cx="12" cy="10" r="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+            <circle cx="12" cy="10" r="7" fill="#DC2626"/>
+            <path d="M9 8 Q12 12 15 9" stroke="#FEF08A" stroke-width="1.5" fill="none"/>
+            
+            <!-- Spinach Namul bowl -->
+            <circle cx="34" cy="10" r="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+            <circle cx="34" cy="10" r="7" fill="#15803D"/>
+            <circle cx="33" cy="9" r="1" fill="#FEF08A"/>
+            <circle cx="36" cy="11" r="1" fill="#FEF08A"/>
+          </g>
+
+          <!-- Fresh Fruit Bowl (Apples & Cherry tomatoes) -->
+          <g transform="translate(235, 275)">
+            <ellipse cx="15" cy="8" rx="18" ry="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+            <circle cx="9" cy="6" r="4.5" fill="#EF4444"/>
+            <circle cx="17" cy="5" r="4.5" fill="#F97316"/>
+            <circle cx="21" cy="7" r="3.5" fill="#EF4444"/>
+            <path d="M10 2 Q12 0 14 3" stroke="#16A34A" stroke-width="1.2" fill="none"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Section 2: 실시간 BMI & 표준체중 산출 -->
+    <section id="calculator" class="card" aria-labelledby="calc-section-title">
+      <div class="section-header">
+        <div class="badge-pill">
+          <i data-lucide="calculator" style="width: 14px; height: 14px;"></i>
+          <span>대화형 건강 지표 분석기</span>
+        </div>
+        <h2 id="calc-section-title" class="section-title">실시간 BMI & 표준체중 산출</h2>
+        <p class="section-desc">
+          신장, 체중, 성별을 입력하면 한국인 영양 지침에 맞춘 체질량지수(BMI)와 표준체중, 복부비만 여부를 실시간으로 정밀하게 산출해 드립니다.
+        </p>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Form Side -->
+        <div class="calc-inputs-col">
+          <!-- Gender Select -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label class="input-label">
+                <i data-lucide="users" style="width: 16px; height: 16px; color: var(--primary);"></i>
+                성별 선택
+              </label>
+            </div>
+            <div class="segmented-control" role="radiogroup" aria-label="성별">
+              <button type="button" id="btnGenderM" class="segmented-btn" onclick="setGender('M')">
+                <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+                <span>남성 (표준지수 22)</span>
+              </button>
+              <button type="button" id="btnGenderF" class="segmented-btn active" onclick="setGender('F')">
+                <i data-lucide="user-check" style="width: 16px; height: 16px;"></i>
+                <span>여성 (표준지수 21)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Height Slider -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="inputHeight" class="input-label">
+                <i data-lucide="ruler" style="width: 16px; height: 16px; color: var(--primary);"></i>
+                신장 (키)
+              </label>
+              <span class="input-val-badge"><span id="valHeightDisp">160</span> cm</span>
+            </div>
+            <div class="range-edit-row">
+              <input type="range" id="inputHeight" class="range-slider" min="130" max="210" value="160" step="0.5" oninput="onHeightChange(this.value)" aria-label="신장 슬라이더">
+              <label class="direct-edit"><input type="number" id="editHeight" min="130" max="210" step="0.5" value="160" oninput="onHeightChange(this.value)" aria-label="신장 직접 입력"><span>cm</span></label>
+            </div>
+          </div>
+
+          <!-- Weight Slider -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="inputWeight" class="input-label">
+                <i data-lucide="scale" style="width: 16px; height: 16px; color: var(--primary);"></i>
+                현재 체중
+              </label>
+              <span class="input-val-badge"><span id="valWeightDisp">58.0</span> kg</span>
+            </div>
+            <div class="range-edit-row">
+              <input type="range" id="inputWeight" class="range-slider" min="35" max="150" value="58.0" step="0.5" oninput="onWeightChange(this.value)" aria-label="체중 슬라이더">
+              <label class="direct-edit"><input type="number" id="editWeight" min="35" max="150" step="0.1" value="58.0" oninput="onWeightChange(this.value)" aria-label="체중 직접 입력"><span>kg</span></label>
+            </div>
+          </div>
+
+          <!-- Waist Circumference Slider -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="inputWaist" class="input-label">
+                <i data-lucide="compass" style="width: 16px; height: 16px; color: var(--primary);"></i>
+                허리둘레 (복부비만 진단)
+              </label>
+              <span class="input-val-badge"><span id="valWaistDisp">74</span> cm</span>
+            </div>
+            <div class="range-edit-row">
+              <input type="range" id="inputWaist" class="range-slider" min="50" max="130" value="74" step="1" oninput="onWaistChange(this.value)" aria-label="허리둘레 슬라이더">
+              <label class="direct-edit"><input type="number" id="editWaist" min="50" max="130" step="1" value="74" oninput="onWaistChange(this.value)" aria-label="허리둘레 직접 입력"><span>cm</span></label>
+            </div>
+          </div>
+
+          <!-- Age Input -->
+          <div class="input-group">
+            <div class="input-label-row">
+              <label for="inputAge" class="input-label">
+                <i data-lucide="calendar" style="width: 16px; height: 16px; color: var(--primary);"></i>
+                연령 (만 나이)
+              </label>
+              <span class="input-val-badge"><span id="valAgeDisp">35</span> 세</span>
+            </div>
+            <div class="range-edit-row">
+              <input type="range" id="inputAge" class="range-slider" min="18" max="80" value="35" step="1" oninput="onAgeChange(this.value)" aria-label="연령 슬라이더">
+              <label class="direct-edit"><input type="number" id="editAge" min="18" max="80" step="1" value="35" oninput="onAgeChange(this.value)" aria-label="연령 직접 입력"><span>세</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-time Diagnostic Dashboard Side -->
+        <div class="bmi-result-panel">
+          <div class="metric-headline">
+            <div class="metric-title-group">
+              <small>체질량지수 (BMI)</small>
+              <div class="metric-main-value">
+                <span id="resBmiNum" style="color: var(--primary); font-size: 2.75rem; font-weight: 800;">22.7</span>
+                <span style="font-size: 1rem; color: var(--on-surface-variant);">kg/m²</span>
+              </div>
+            </div>
+            <div>
+              <span id="resBmiBadge" class="status-badge status-normal">
+                <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
+                <span id="resBmiCategory">정상 범위</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Visual BMI Gauge -->
+          <div class="gauge-wrapper" aria-hidden="true">
+            <svg class="gauge-svg" viewBox="0 0 300 135">
+              <!-- Color Bands -->
+              <!-- Underweight: < 18.5 (angle 180 to 142) -->
+              <path d="M 20 120 A 100 100 0 0 1 58 48" fill="none" stroke="#38bdf8" stroke-width="18" stroke-linecap="round"/>
+              <!-- Normal: 18.5 - 22.9 (angle 142 to 102) -->
+              <path d="M 58 48 A 100 100 0 0 1 126 23" fill="none" stroke="#22c55e" stroke-width="18"/>
+              <!-- Overweight: 23 - 24.9 (angle 102 to 84) -->
+              <path d="M 126 23 A 100 100 0 0 1 165 23" fill="none" stroke="#f59e0b" stroke-width="18"/>
+              <!-- Obese 1: 25 - 29.9 (angle 84 to 40) -->
+              <path d="M 165 23 A 100 100 0 0 1 235 50" fill="none" stroke="#ef4444" stroke-width="18"/>
+              <!-- Obese 2/3: >= 30 (angle 40 to 0) -->
+              <path d="M 235 50 A 100 100 0 0 1 280 120" fill="none" stroke="#991b1b" stroke-width="18" stroke-linecap="round"/>
+              
+              <!-- Center Pivot Pin -->
+              <circle cx="150" cy="120" r="10" fill="#1b2b33"/>
+              <circle cx="150" cy="120" r="4" fill="#ffffff"/>
+
+              <!-- Dynamic Needle -->
+              <g id="bmiNeedle" class="gauge-needle" style="transform: rotate(-15deg);">
+                <polygon points="147,120 153,120 150,22" fill="#1b2b33"/>
+                <circle cx="150" cy="22" r="3" fill="#0f7c8a"/>
+              </g>
+            </svg>
+            <div class="gauge-scale-labels">
+              <span>저체중 (&lt;18.5)</span>
+              <span>정상 (18.5~22.9)</span>
+              <span>비만전단계 (23~)</span>
+              <span>비만 (25+)</span>
+            </div>
+          </div>
+
+          <!-- Comparison Statistics Grid -->
+          <div class="stats-card-grid">
+            <div class="stat-mini-card">
+              <span class="label">표준 체중 (권장)</span>
+              <span class="val"><span id="resIdealWeight">53.8</span> kg</span>
+              <span class="note" id="resFormulaNote">신장(m)² × 21</span>
+            </div>
+            <div class="stat-mini-card">
+              <span class="label">체중 조절 목표</span>
+              <span class="val" id="resWeightDiff">+4.2 kg</span>
+              <span class="note" id="resWeightDiffNote">완만 감량 권장</span>
+            </div>
+            <div class="stat-mini-card">
+              <span class="label">비만도 (PIBW)</span>
+              <span class="val"><span id="resPibw">107.8</span>%</span>
+              <span class="note" id="resPibwStatus">정상 범위</span>
+            </div>
+          </div>
+
+          <!-- Waist Assessment Box -->
+          <div id="waistAlertBox" class="waist-alert-box waist-normal">
+            <i data-lucide="shield-check" style="width: 20px; height: 20px; flex-shrink: 0;"></i>
+            <div>
+              <strong id="waistAlertTitle">복부둘레 정상:</strong>
+              <span id="waistAlertText">여성 복부비만 기준치(85cm 미만)를 안정적으로 유지하고 있어 내장지방 위험이 적습니다.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: 비만의 원인과 위험성 -->
+    <section id="risks" class="card" aria-labelledby="risks-title">
+      <div class="section-header">
+        <div class="badge-pill">
+          <i data-lucide="alert-triangle" style="width: 14px; height: 14px;"></i>
+          <span>건강 가이드 리포트</span>
+        </div>
+        <h2 id="risks-title" class="section-title">비만의 주요 원인과 신체 건강 위험성</h2>
+        <p class="section-desc">
+          비만은 단순한 외모의 문제가 아닌, 전신 대사질환과 염증 반응을 촉진하는 만성 건강 위험인자입니다. 원인을 정확히 이해할 때 올바른 관리가 시작됩니다.
+        </p>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="tab-nav" role="tablist">
+        <button class="tab-btn active" id="tabBtnCauses" onclick="switchRiskTab('causes')">
+          <i data-lucide="help-circle" style="width: 16px; height: 16px;"></i>
+          <span>비만 발생 5대 요인</span>
+        </button>
+        <button class="tab-btn" id="tabBtnRisks" onclick="switchRiskTab('risks')">
+          <i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i>
+          <span>만성질환 및 건강 위험성</span>
+        </button>
+      </div>
+
+      <!-- Tab Content 1: Causes -->
+      <div id="tabContentCauses" class="causes-grid">
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon"><i data-lucide="cookie"></i></div>
+            <h3 class="info-card-title">1. 과잉 열량 및 정제당 섭취</h3>
+          </div>
+          <p class="info-card-text">
+            필요 이상의 고칼로리 음식과 액상과당, 단순당류, 트랜스지방 과다 섭취는 체내 인슐린 저항성을 유발하며 잉여 에너지를 즉시 체지방으로 축적시킵니다.
+          </p>
+          <ul class="info-card-bullets">
+            <li>가공식품, 가당 음료, 배달 음식 빈도 증가</li>
+            <li>급격한 혈당 스파이크와 공복감 악순환</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon"><i data-lucide="footprints"></i></div>
+            <h3 class="info-card-title">2. 신체 활동 및 운동 부족</h3>
+          </div>
+          <p class="info-card-text">
+            현대인의 좌식 생활 환경(장시간 컴퓨터·스마트폰 사용)으로 인해 일상 신체 활동량이 감소하면서 근육량과 기초대사량이 급격히 떨어집니다.
+          </p>
+          <ul class="info-card-bullets">
+            <li>일일 비운동성 활동 열소비(NEAT) 결핍</li>
+            <li>에너지 소비 불균형에 따른 내장지방 축적</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon"><i data-lucide="dna"></i></div>
+            <h3 class="info-card-title">3. 유전적 및 가족 환경 요인</h3>
+          </div>
+          <p class="info-card-text">
+            부모의 비만 유병률뿐만 아니라, 가족이 공유하는 공통 식습관(짜고 달게 먹는 식단, 야식 문화)이 대사 조절 능력에 직접적인 영향을 미칩니다.
+          </p>
+          <ul class="info-card-bullets">
+            <li>기초대사율 및 지방 세포 수의 유전적 차이</li>
+            <li>성장기 식습관의 평생 고착화</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon"><i data-lucide="stethoscope"></i></div>
+            <h3 class="info-card-title">4. 호르몬 및 대사 불균형</h3>
+          </div>
+          <p class="info-card-text">
+            갑상선 기능저하증, 쿠싱증후군 등 내분비 질환이나 식욕 억제 호르몬인 렙틴(Leptin) 저항성으로 인해 뇌가 포만감을 느끼지 못하는 상태가 발생합니다.
+          </p>
+          <ul class="info-card-bullets">
+            <li>신진대사 저하로 적게 먹어도 체중 증가</li>
+            <li>호르몬 불균형에 따른 지속적인 가짜 식욕</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon"><i data-lucide="brain"></i></div>
+            <h3 class="info-card-title">5. 만성 스트레스 & 수면 박탈</h3>
+          </div>
+          <p class="info-card-text">
+            지속적인 스트레스는 부신에서 코르티솔 분비를 촉진하여 복부 내장지방을 집중 축적시키며, 수면 부족 시 식욕 촉진 호르몬(그렐린)이 급증합니다.
+          </p>
+          <ul class="info-card-bullets">
+            <li>정서적 허기를 채우려는 야식 및 감정적 폭식</li>
+            <li>세로토닌 저하로 인한 자극적인 탄수화물 갈망</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Health Risks -->
+      <div id="tabContentRisks" class="causes-grid" style="display: none;">
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon" style="color: var(--error);"><i data-lucide="flame"></i></div>
+            <h3 class="info-card-title">내장지방의 만성 염증 상태</h3>
+          </div>
+          <p class="info-card-text">
+            복부 깊숙이 쌓인 내장지방은 단순 지방 덩어리가 아니라 아디포카인, TNF-α, 인터루킨-6 등 염증 물질을 끊임없이 분비하여 전신 혈관벽을 손상시킵니다.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon" style="color: var(--warning);"><i data-lucide="heart-crack"></i></div>
+            <h3 class="info-card-title">대사질환 (당뇨병 & 고혈압)</h3>
+          </div>
+          <p class="info-card-text">
+            인슐린 저항성이 극대화되어 제2형 당뇨병 위험이 4~10배 증가하며, 혈관 내 중성지방과 콜레스테롤 침착으로 고혈압 및 이상지질혈증을 초래합니다.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon" style="color: var(--primary);"><i data-lucide="bone"></i></div>
+            <h3 class="info-card-title">관절염 및 수면무호흡증</h3>
+          </div>
+          <p class="info-card-text">
+            과도한 체중 하중으로 무릎 퇴행성 관절염 발병률이 급증하며, 기도 주변의 지방 조직 증식으로 수면 중 호흡이 멈추는 폐쇄성 수면무호흡증이 발생합니다.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon" style="color: var(--error);"><i data-lucide="activity"></i></div>
+            <h3 class="info-card-title">심뇌혈관질환 위험</h3>
+          </div>
+          <p class="info-card-text">
+            혈관이 좁아지고 탄력을 잃음에 따라 협심증, 심근경색증 및 뇌혈관이 막히거나 터지는 뇌졸중(중풍)의 직접적인 위험 인자가 됩니다.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon" style="color: #7c3aed;"><i data-lucide="shield-alert"></i></div>
+            <h3 class="info-card-title">주요 암 발병률 증가</h3>
+          </div>
+          <p class="info-card-text">
+            만성 염증과 비정상적인 세포 신호전달로 인해 간암, 대장·직장암, 식도암, 유방암, 췌장암 등 주요 중증 암의 발생 확률이 유의미하게 높아집니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: 활동 수준별 맞춤 필요 열량 -->
+    <section id="energy" class="card" aria-labelledby="energy-title">
+      <div class="section-header">
+        <div class="badge-pill">
+          <i data-lucide="zap" style="width: 14px; height: 14px;"></i>
+          <span>활동 맞춤 에너지 지침</span>
+        </div>
+        <h2 id="energy-title" class="section-title">활동 수준별 하루 필요 열량 및 안전 감량 목표</h2>
+        <p class="section-desc">
+          한국인 영양소 섭취기준 에너지 공식에 기반하여, 개인의 신체 활동 계수(PA)에 꼭 맞는 하루 필요 열량과 주당 0.5~0.7kg의 안전 감량 플랜을 설정합니다.
+        </p>
+      </div>
+
+      <div class="energy-planner-grid">
+        <!-- Activity Level Controls -->
+        <div>
+          <label class="input-label" style="margin-bottom: var(--space-sm);">
+            <i data-lucide="person-standing" style="width: 16px; height: 16px; color: var(--primary);"></i>
+            평소 일상 신체 활동 수준 선택
+          </label>
+          <div class="activity-selector-list" role="radiogroup" aria-label="활동 수준">
+            <div class="activity-option" id="actOpt1" onclick="setActivityLevel(1)">
+              <div class="activity-meta">
+                <span class="activity-title">1단계: 매우 낮음 (비활동적)</span>
+                <span class="activity-desc">대부분 좌식 생활, 침상 안정, 신체 활동 거의 없음</span>
+              </div>
+              <span class="activity-coeff">25~30 kcal/kg</span>
+            </div>
+
+            <div class="activity-option active" id="actOpt2" onclick="setActivityLevel(2)">
+              <div class="activity-meta">
+                <span class="activity-title">2단계: 낮음 (저활동적, 일반 사무직)</span>
+                <span class="activity-desc">가벼운 가사 노동, 사무 좌식 근무, 출퇴근 가벼운 보행</span>
+              </div>
+              <span class="activity-coeff">30~35 kcal/kg</span>
+            </div>
+
+            <div class="activity-option" id="actOpt3" onclick="setActivityLevel(3)">
+              <div class="activity-meta">
+                <span class="activity-title">3단계: 보통 (활동적, 규칙적 운동)</span>
+                <span class="activity-desc">일상 보행 충분, 주 2~3회 규칙적인 운동 병행</span>
+              </div>
+              <span class="activity-coeff">35~40 kcal/kg</span>
+            </div>
+
+            <div class="activity-option" id="actOpt4" onclick="setActivityLevel(4)">
+              <div class="activity-meta">
+                <span class="activity-title">4단계: 높음 (매우 활동적)</span>
+                <span class="activity-desc">활동량이 많은 직업군, 주기적 강도 높은 스포츠 훈련</span>
+              </div>
+              <span class="activity-coeff">40~45 kcal/kg</span>
+            </div>
+
+            <div class="activity-option" id="actOpt5" onclick="setActivityLevel(5)">
+              <div class="activity-meta">
+                <span class="activity-title">5단계: 매우 높음 (중노동)</span>
+                <span class="activity-desc">건설/농업 등 육체 노동, 엘리트 선수급 고강도 트레이닝</span>
+              </div>
+              <span class="activity-coeff">45~50 kcal/kg</span>
+            </div>
+          </div>
+
+          <!-- Safe Deficit Selection -->
+          <div style="margin-top: var(--space-md);">
+            <label class="input-label">
+              <i data-lucide="target" style="width: 16px; height: 16px; color: var(--tertiary);"></i>
+              안전 감량 목표 설정 (권장 500~750 kcal)
+            </label>
+            <div class="deficit-options">
+              <button type="button" class="deficit-btn" id="btnDeficit0" onclick="setDeficitGoal(0)">
+                <span class="title">체중 유지</span>
+                <span class="sub">0 kcal 차감</span>
+              </button>
+              <button type="button" class="deficit-btn active" id="btnDeficit500" onclick="setDeficitGoal(500)">
+                <span class="title">안전 감량 A (추천)</span>
+                <span class="sub">-500 kcal (주 0.5kg↓)</span>
+              </button>
+              <button type="button" class="deficit-btn" id="btnDeficit750" onclick="setDeficitGoal(750)">
+                <span class="title">안전 감량 B</span>
+                <span class="sub">-750 kcal (주 0.7kg↓)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calorie Result Summary Box -->
+        <div class="calorie-summary-box">
+          <div class="calorie-hero-stat">
+            <div class="label">나의 맞춤 권장 섭취 열량</div>
+            <div class="big-num" id="resTargetCal">1,350</div>
+            <div class="unit">kcal / 하루</div>
+          </div>
+
+          <div>
+            <div class="calorie-breakdown-row">
+              <span>기초 유지 필요 열량 (TDEE):</span>
+              <strong><span id="resMaintainCal">1,850</span> kcal</strong>
+            </div>
+            <div class="calorie-breakdown-row">
+              <span>설정된 감량 차감량:</span>
+              <strong style="color: var(--tertiary);"><span id="resDeficitCal">-500</span> kcal</strong>
+            </div>
+            <div class="calorie-breakdown-row">
+              <span>예상 체중 감량 속도:</span>
+              <strong><span id="resLossRate">주당 약 0.5kg</span></strong>
+            </div>
+            <div class="calorie-breakdown-row">
+              <span>1개월(4주) 후 예상 도달:</span>
+              <strong style="color: var(--primary);"><span id="resOneMonthWeight">56.0</span> kg</strong>
+            </div>
+          </div>
+
+          <div style="background: var(--card-bg); border-radius: var(--rounded); padding: var(--space-sm) var(--space-md); border: 1px solid var(--outline-variant); font-size: 0.8125rem; color: var(--on-surface-variant); line-height: 1.5;">
+            <strong style="color: var(--primary); display: block; margin-bottom: 2px;">💡 건강한 감량 영양 팁:</strong>
+            하루 500~750 kcal의 완만한 열량 결손은 근육 손실을 막고 기초대사량을 보존하는 가장 안전한 의학적 감량법입니다. (절대 1,000 kcal 미만의 초저열량식은 피하세요!)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: 6대 식품군 권장 서빙 가이드 -->
+    <section id="food-groups" class="card" aria-labelledby="food-groups-title">
+      <div class="section-header">
+        <div class="badge-pill">
+          <i data-lucide="salad" style="width: 14px; height: 14px;"></i>
+          <span>식사 구성 가이드</span>
+        </div>
+        <h2 id="food-groups-title" class="section-title">6대 식품군 권장 서빙(Serving) 가이드</h2>
+        <p class="section-desc">
+          한국 영양 지침에서 권장하는 6가지 필수 식품군과 1인 1회 섭취 분량(서빙 크기) 및 대표 열량을 확인하여 균형 잡힌 접시를 구성하세요.
+        </p>
+      </div>
+
+      <div class="food-grid">
+        <!-- 1. Grains -->
+        <div class="food-card grain">
+          <div class="food-header">
+            <div class="food-title-group">
+              <div class="food-badge-icon" aria-hidden="true">🌾</div>
+              <div>
+                <h3 class="food-name">곡류</h3>
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant);">복합 탄수화물 & 에너지</span>
+              </div>
+            </div>
+            <span class="food-servings">매일 2~4회</span>
+          </div>
+          <div class="food-serving-info">
+            <p><strong>1회 분량 기준 (약 300 kcal):</strong></p>
+            <p>• 쌀밥 1공기 (210g)</p>
+            <p>• 식빵 2쪽 또는 삶은 국수 1대접 (210g)</p>
+            <p>• 삶은 고구마 1개 (중, 140g)</p>
+          </div>
+          <div class="food-tip">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #d97706; flex-shrink: 0;"></i>
+            <span>흰쌀밥 대신 현미, 귀리, 잡곡을 섞으면 혈당 상승이 완만해집니다.</span>
+          </div>
+        </div>
+
+        <!-- 2. Meat / Fish / Eggs / Beans -->
+        <div class="food-card meat">
+          <div class="food-header">
+            <div class="food-title-group">
+              <div class="food-badge-icon" aria-hidden="true">🥩</div>
+              <div>
+                <h3 class="food-name">고기·생선·달걀·콩류</h3>
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant);">양질의 단백질 & 철분</span>
+              </div>
+            </div>
+            <span class="food-servings">매일 3~4회</span>
+          </div>
+          <div class="food-serving-info">
+            <p><strong>1회 분량 기준 (약 100~140 kcal):</strong></p>
+            <p>• 소/돼지 살코기 60g (손바닥 1/3)</p>
+            <p>• 닭가슴살 60g 또는 생선 1토막 (70g)</p>
+            <p>• 달걀 1개 (50g) 또는 두부 1/5모 (80g)</p>
+          </div>
+          <div class="food-tip">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #dc2626; flex-shrink: 0;"></i>
+            <span>지방이 많은 부위(삼겹살, 껍질)보다 살코기와 식물성 콩 단백질을 권장합니다.</span>
+          </div>
+        </div>
+
+        <!-- 3. Vegetables -->
+        <div class="food-card veggie">
+          <div class="food-header">
+            <div class="food-title-group">
+              <div class="food-badge-icon" aria-hidden="true">🥬</div>
+              <div>
+                <h3 class="food-name">채소류</h3>
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant);">비타민, 미네랄, 식이섬유</span>
+              </div>
+            </div>
+            <span class="food-servings">매 끼니 2접시 이상</span>
+          </div>
+          <div class="food-serving-info">
+            <p><strong>1회 분량 기준 (약 15~25 kcal):</strong></p>
+            <p>• 쌈채소/샐러드 생채소 1접시 (70g)</p>
+            <p>• 시금치/나물류 1작은접시 (50g)</p>
+            <p>• 배추김치 1작은접시 (40g)</p>
+          </div>
+          <div class="food-tip">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #16a34a; flex-shrink: 0;"></i>
+            <span>식사 첫 단계에 채소를 먼저 섭취하면 포만감 형성 및 당 흡수 지연에 탁월합니다.</span>
+          </div>
+        </div>
+
+        <!-- 4. Fruits -->
+        <div class="food-card fruit">
+          <div class="food-header">
+            <div class="food-title-group">
+              <div class="food-badge-icon" aria-hidden="true">🍎</div>
+              <div>
+                <h3 class="food-name">과일류</h3>
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant);">비타민 C & 천연 항산화물질</span>
+              </div>
+            </div>
+            <span class="food-servings">매일 1~2회</span>
+          </div>
+          <div class="food-serving-info">
+            <p><strong>1회 분량 기준 (약 50~100 kcal):</strong></p>
+            <p>• 사과 반쪽 (100g) 또는 귤 1개 (100g)</p>
+            <p>• 바나나 1/2개 또는 방울토마토 15개</p>
+            <p>• 포도 15알 (100g)</p>
+          </div>
+          <div class="food-tip">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #9333ea; flex-shrink: 0;"></i>
+            <span>과일주스는 당분 흡수가 빠르므로 껍질째 먹는 신선한 생과일을 선택하세요.</span>
+          </div>
+        </div>
+
+        <!-- 5. Dairy -->
+        <div class="food-card dairy">
+          <div class="food-header">
+            <div class="food-title-group">
+              <div class="food-badge-icon" aria-hidden="true">🥛</div>
+              <div>
+                <h3 class="food-name">우유 및 유제품류</h3>
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant);">골밀도 강화 & 칼슘 공급</span>
+              </div>
+            </div>
+            <span class="food-servings">매일 1~2회</span>
+          </div>
+          <div class="food-serving-info">
+            <p><strong>1회 분량 기준 (약 80~125 kcal):</strong></p>
+            <p>• 일반 우유 1컵 (200ml, 125 kcal)</p>
+            <p>• 저지방/무지방 우유 1컵 (80 kcal)</p>
+            <p>• 플레인 요거트 1개 (85g) 또는 슬라이스 치즈 1장</p>
+          </div>
+          <div class="food-tip">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #2563eb; flex-shrink: 0;"></i>
+            <span>감량기에는 당류가 첨가되지 않은 무가당 플레인 그릭요거트를 권장합니다.</span>
+          </div>
+        </div>
+
+        <!-- 6. Oils & Sugars -->
+        <div class="food-card oil">
+          <div class="food-header">
+            <div class="food-title-group">
+              <div class="food-badge-icon" aria-hidden="true">🥑</div>
+              <div>
+                <h3 class="food-name">유지 및 당류</h3>
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant);">필수 지방산 & 지용성 비타민 흡수</span>
+              </div>
+            </div>
+            <span class="food-servings">최소량만 사용</span>
+          </div>
+          <div class="food-serving-info">
+            <p><strong>1회 분량 기준 (약 45 kcal):</strong></p>
+            <p>• 들기름/참기름/올리브유 1작은술 (5g)</p>
+            <p>• 견과류 한 줌 (호두 1개 또는 아몬드 7알)</p>
+            <p>• 조미 설탕 1작은술 (5g, 약 20 kcal)</p>
+          </div>
+          <div class="food-tip">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #ca8a04; flex-shrink: 0;"></i>
+            <span>가공 튀김류나 당도 높은 음료를 줄이고, 나물 무침의 신선한 들기름으로 섭취하세요.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hand-portion visual guide -->
+      <div class="hand-guide-bar">
+        <div class="hand-item">
+          <span class="hand-icon" aria-hidden="true">✊</span>
+          <div class="hand-text">
+            <strong>주먹 크기</strong>
+            <span>밥 1공기 / 채소 한 접시</span>
+          </div>
+        </div>
+        <div class="hand-item">
+          <span class="hand-icon" aria-hidden="true">✋</span>
+          <div class="hand-text">
+            <strong>손바닥 크기</strong>
+            <span>단백질 1회 (생선, 살코기)</span>
+          </div>
+        </div>
+        <div class="hand-item">
+          <span class="hand-icon" aria-hidden="true">👍</span>
+          <div class="hand-text">
+            <strong>엄지손가락 한 마디</strong>
+            <span>건강한 조리유 1작은술</span>
+          </div>
+        </div>
+        <div class="hand-item">
+          <span class="hand-icon" aria-hidden="true">🤲</span>
+          <div class="hand-text">
+            <strong>오목한 한 줌</strong>
+            <span>제철 과일 & 견과류 1회 분량</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: 안전 감량 7일 웰빙 식단 -->
+    <section id="meal-plan" class="card" aria-labelledby="meal-plan-title">
+      <div class="section-header">
+        <div class="badge-pill">
+          <i data-lucide="calendar-check" style="width: 14px; height: 14px;"></i>
+          <span>실시간 맞춤 식단</span>
+        </div>
+        <h2 id="meal-plan-title" class="section-title">안전 감량 7일 웰빙 맞춤 식단표</h2>
+        <p class="section-desc">
+          요일별 탭과 목표 열량(1,200 ~ 1,800 kcal)을 클릭하여 맛과 영양 균형이 최적화된 하루 4끼(아침·점심·저녁·간식) 식단을 확인하세요.
+        </p>
+      </div>
+
+      <!-- Controls: Day Tabs & Calorie Filters -->
+      <div class="meal-plan-controls">
+        <!-- Day Tabs -->
+        <div class="day-tabs" role="tablist" aria-label="요일 선택">
+          <button type="button" class="day-tab-btn active" id="dayTab0" onclick="selectDay(0)">
+            <i data-lucide="calendar" style="width: 15px; height: 15px;"></i>
+            <span>월요일</span>
+          </button>
+          <button type="button" class="day-tab-btn" id="dayTab1" onclick="selectDay(1)">
+            <i data-lucide="calendar" style="width: 15px; height: 15px;"></i>
+            <span>화요일</span>
+          </button>
+          <button type="button" class="day-tab-btn" id="dayTab2" onclick="selectDay(2)">
+            <i data-lucide="calendar" style="width: 15px; height: 15px;"></i>
+            <span>수요일</span>
+          </button>
+          <button type="button" class="day-tab-btn" id="dayTab3" onclick="selectDay(3)">
+            <i data-lucide="calendar" style="width: 15px; height: 15px;"></i>
+            <span>목요일</span>
+          </button>
+          <button type="button" class="day-tab-btn" id="dayTab4" onclick="selectDay(4)">
+            <i data-lucide="calendar" style="width: 15px; height: 15px;"></i>
+            <span>금요일</span>
+          </button>
+          <button type="button" class="day-tab-btn" id="dayTab5" onclick="selectDay(5)">
+            <i data-lucide="calendar" style="width: 15px; height: 15px;"></i>
+            <span>토요일</span>
+          </button>
+          <button type="button" class="day-tab-btn" id="dayTab6" onclick="selectDay(6)">
+            <i data-lucide="calendar" style="width: 15px; height: 15px;"></i>
+            <span>일요일</span>
+          </button>
+        </div>
+
+        <!-- Calorie Level Pills -->
+        <div class="calorie-filter-row">
+          <span class="filter-label"><i data-lucide="sliders" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> 목표 열량 필터:</span>
+          <button type="button" class="cal-pill-btn" id="calPill1200" onclick="selectCalorieTier(1200)">1,200 kcal (라이트)</button>
+          <button type="button" class="cal-pill-btn active" id="calPill1400" onclick="selectCalorieTier(1400)">1,400 kcal (표준 감량)</button>
+          <button type="button" class="cal-pill-btn" id="calPill1600" onclick="selectCalorieTier(1600)">1,600 kcal (활동형 감량)</button>
+          <button type="button" class="cal-pill-btn" id="calPill1800" onclick="selectCalorieTier(1800)">1,800 kcal (남성/유지형)</button>
+        </div>
+      </div>
+
+      <!-- Rendered Meals Display -->
+      <div id="mealsGridContainer" class="meals-day-grid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Nutritional Balance & Today's Tip Bar -->
+      <div class="meal-plan-summary-card">
+        <div class="diet-macro-bars">
+          <span class="macro-chip"><span class="macro-dot dot-carb"></span>탄수화물 55%</span>
+          <span class="macro-chip"><span class="macro-dot dot-protein"></span>단백질 20%</span>
+          <span class="macro-chip"><span class="macro-dot dot-fat"></span>지방 25%</span>
+        </div>
+        <div style="font-size: 0.875rem; color: var(--on-surface);">
+          <strong style="color: var(--primary);">오늘의 웰빙 영양 지침:</strong>
+          <span id="dailyTipText">식사 15분 전 따뜻한 물 한 컵을 마시고 채소 반찬부터 천천히 씹어 드세요.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7 & 8: 신규 추가 섹션 (식단표 바로 다음 위치) -->
+    <!-- 규칙적인 운동하기 & 스트레스 관리하기 -->
+    <section id="lifestyle" class="lifestyle-grid" aria-labelledby="lifestyle-heading">
+      <!-- 7. 규칙적인 운동하기 -->
+      <div class="lifestyle-card card-exercise" aria-labelledby="exercise-title">
+        <div class="lifestyle-head">
+          <div class="lifestyle-icon-box box-exercise" aria-hidden="true">
+            <i data-lucide="dumbbell"></i>
+          </div>
+          <div>
+            <h3 id="exercise-title" class="lifestyle-title">규칙적인 운동하기</h3>
+            <span class="lifestyle-sub">신체 활동 증진 및 호르몬 균형 회복</span>
+          </div>
+        </div>
+
+        <div class="lifestyle-item">
+          <div class="lifestyle-item-title">
+            <i data-lucide="heart" style="width: 16px; height: 16px; color: var(--tertiary);"></i>
+            유산소 운동: 중강도 주 150분 이상
+          </div>
+          <p class="lifestyle-item-desc">
+            빠르게 걷기(파워워킹), 인터벌 조깅, 실내 자전거, 수영 등 약간 숨이 차면서 대화가 가능한 강도로 주 3~5회, 회당 30분 이상 실천하여 체지방을 적극적으로 연소합니다.
+          </p>
+        </div>
+
+        <div class="lifestyle-item">
+          <div class="lifestyle-item-title">
+            <i data-lucide="biceps" style="width: 16px; height: 16px; color: var(--tertiary);"></i>
+            근력 운동: 주 2~3회 전신 근력 강화
+          </div>
+          <p class="lifestyle-item-desc">
+            스쿼트, 런지, 푸시업, 플랭크 등 대근육 중심의 저항 운동을 병행하여 다이어트 중 기초대사량(BMR) 저하를 막고 근손실 없는 탄탄한 신체를 만듭니다.
+          </p>
+        </div>
+
+        <div class="lifestyle-item">
+          <div class="lifestyle-item-title">
+            <i data-lucide="shield-check" style="width: 16px; height: 16px; color: var(--tertiary);"></i>
+            호르몬 조절 및 생리적 효과
+          </div>
+          <p class="lifestyle-item-desc">
+            <strong>코르티솔(스트레스 호르몬)</strong> 분비를 안정시켜 복부 내장지방 축적을 차단하고, 포만감 호르몬인 <strong>렙틴(Leptin)</strong> 감수성을 회복시켜 가짜 배고픔과 폭식 욕구를 자연스럽게 줄여줍니다.
+          </p>
+        </div>
+
+        <div class="lifestyle-item">
+          <div class="lifestyle-item-title">
+            <i data-lucide="footprints" style="width: 16px; height: 16px; color: var(--tertiary);"></i>
+            일상 속 비운동성 활동 열소비 (NEAT)
+          </div>
+          <p class="lifestyle-item-desc">
+            엘리베이터 대신 계단 오르기, 식후 15분 산책, 대중교통 이용 시 한 정거장 일찍 걷기 등 일상 속 작은 움직임이 모여 하루 200~300 kcal 이상의 추가 소비를 만듭니다.
+          </p>
+        </div>
+      </div>
+
+      <!-- 8. 스트레스 관리하기 -->
+      <div class="lifestyle-card card-stress" aria-labelledby="stress-title">
+        <div class="lifestyle-head">
+          <div class="lifestyle-icon-box box-stress" aria-hidden="true">
+            <i data-lucide="moon"></i>
+          </div>
+          <div>
+            <h3 id="stress-title" class="lifestyle-title">스트레스 관리하기</h3>
+            <span class="lifestyle-sub">올바른 수면 습관 & 음주·폭식 방지 웰빙 가이드</span>
+          </div>
+        </div>
+
+        <div class="lifestyle-item">
+          <div class="lifestyle-item-title">
+            <i data-lucide="bed" style="width: 16px; height: 16px; color: #5c5fb0;"></i>
+            올바른 수면 습관 (매일 7~8시간 골든 타임)
+          </div>
+          <p class="lifestyle-item-desc">
+            수면 시간이 6시간 미만으로 부족하면 식욕 촉진 호르몬인 <em>그렐린(Ghrelin)</em>이 15% 이상 증가합니다. 취침 2시간 전 스마트폰 블루라이트를 차단하고 규칙적인 수면 리듬을 지키세요.
+          </p>
+        </div>
+
+        <div class="lifestyle-item">
+          <div class="lifestyle-item-title">
+            <i data-lucide="glass-water" style="width: 16px; height: 16px; color: #5c5fb0;"></i>
+            감정적 섭식 탈출 & 절주 원칙
+          </div>
+          <p class="lifestyle-item-desc">
+            외로움·스트레스를 음식으로 해소하는 가짜 배고픔이 올 땐 <strong>15분 지연법</strong>을 실천하세요. 알코올은 1군 발암물질이자 1g당 7kcal의 고열량으로 식욕 억제 중추를 마비시키므로 음주 강요 문화를 피하고 절주를 실천합니다.
+          </p>
+        </div>
+
+        <!-- 4-7-8 Breathing Guide Interactive Widget -->
+        <div class="breathing-widget">
+          <div>
+            <strong style="color: #5c5fb0; font-size: 1rem; display: block;">심신 안정을 위한 4-7-8 웰빙 호흡 가이드</strong>
+            <span style="font-size: 0.8125rem; color: var(--on-surface-variant);">
+              코로 4초 들이쉬고, 7초 멈춘 후, 입으로 8초 천천히 내쉬며 자율신경을 안정시킵니다.
+            </span>
+          </div>
+
+          <div class="breathing-circle-wrapper" aria-hidden="true">
+            <div id="breathPulseRing" class="breathing-pulse-ring"></div>
+            <div class="breathing-core">
+              <span id="breathActionText" class="breathing-action-text">준비</span>
+              <span id="breathTimerNum" class="breathing-timer-num">4</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: var(--space-sm); align-items: center;">
+            <button type="button" id="btnToggleBreathe" class="breath-ctl-btn" onclick="toggleBreathingGuide()">
+              <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+              <span id="btnBreatheText">호흡 가이드 시작</span>
+            </button>
+            <span id="breathCycleText" style="font-size: 0.8125rem; color: var(--on-surface-variant); font-weight: 600;">진행: 0 / 4회</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 9: 하단 기능 버튼 (페이지 최하단에 배치, JS 이벤트 작동 보장) -->
+    <section class="bottom-action-section" aria-labelledby="bottom-action-title">
+      <div class="action-header-group">
+        <h2 id="bottom-action-title" class="action-headline">나의 맞춤 건강 관리 완성하기</h2>
+        <p class="action-sub">
+          분석된 신체 지표와 맞춤 식단, 건강 실천 지침을 안전하게 저장하거나 출력용 요약서로 보관하세요.
+        </p>
+      </div>
+
+      <div class="action-buttons-group">
+        <!-- 1. 건강리포트 저장 -->
+        <button type="button" id="btnSaveHealthReport" class="btn-action btn-primary-action" onclick="saveHealthReport()">
+          <i data-lucide="save" style="width: 18px; height: 18px;"></i>
+          <span>건강리포트 저장</span>
+        </button>
+
+        <!-- 저장된 건강리포트 다시 불러오기 -->
+        <button type="button" id="btnLoadHealthReport" class="btn-action btn-secondary-action" onclick="loadSavedHealthReport()">
+          <i data-lucide="folder-open" style="width: 18px; height: 18px;"></i>
+          <span>저장된 건강리포트 불러오기</span>
+        </button>
+
+        <!-- 2. 건강요약서 다운로드 -->
+        <button type="button" id="btnDownloadHealthSummary" class="btn-action btn-secondary-action" onclick="downloadHealthSummary()">
+          <i data-lucide="download" style="width: 18px; height: 18px;"></i>
+          <span>건강요약서 다운로드</span>
+        </button>
+
+        <!-- 3. PDF / 인쇄 저장 -->
+        <button type="button" id="btnPrintReport" class="btn-action btn-outline-action" onclick="printReport()">
+          <i data-lucide="printer" style="width: 18px; height: 18px;"></i>
+          <span>PDF / 인쇄 저장</span>
+        </button>
+      </div>
+      <p style="margin-top: 0.9rem; font-size: 0.8125rem; color: var(--on-surface-subtle);">
+        PDF 저장은 버튼을 누른 뒤 인쇄 창에서 프린터를 <strong>PDF로 저장</strong>으로 선택해 주세요.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- Modal for Saved Health Report Viewer -->
+  <div id="savedReportModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalReportTitle">
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" onclick="closeSavedModal()" aria-label="닫기">
+        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+      </button>
+      <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md);">
+        <div style="background: var(--tertiary-container); color: var(--tertiary); padding: 8px; border-radius: var(--rounded);">
+          <i data-lucide="file-check" style="width: 22px; height: 22px;"></i>
+        </div>
+        <div>
+          <h3 id="modalReportTitle" style="font-size: 1.25rem; font-weight: 700; color: var(--on-surface);">개인 건강 리포트 저장 내역</h3>
+          <span style="font-size: 0.8125rem; color: var(--on-surface-variant);" id="modalSaveTimestamp">최근 저장: 2026-11-06</span>
+        </div>
+      </div>
+      <div id="modalReportContent" style="font-size: 0.9375rem; line-height: 1.6; color: var(--on-surface);">
+        <!-- Injected by JavaScript -->
+      </div>
+      <div style="margin-top: var(--space-lg); text-align: right;">
+        <button type="button" class="btn-action btn-primary-action" style="padding: 0.5rem 1.25rem; font-size: 0.875rem;" onclick="closeSavedModal()">
+          확인 완료
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Message -->
+  <div id="toastNotification" class="toast-popup" role="status" aria-live="polite">
+    <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #22c55e;"></i>
+    <span id="toastMsg">개인 맞춤 건강리포트가 안전하게 저장되었습니다!</span>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 건강한 삶을 위하여 (For a Healthy Life). 국민 건강 식생활 &amp; 웰빙 라이프 포털.</p>
+    <p style="margin-top: 4px; font-size: 0.75rem;">본 건강 지침은 한국인 영양소 섭취기준 및 보건복지부 식생활 가이드를 준용하여 제작되었습니다.</p>
+  </footer>
+
+  <!-- Gemini Notebook Shim for state persistence -->
+  <api-shim></api-shim>
+
+  <script>
+    /* ==========================================================================
+       HEALTH PORTAL CORE APPLICATION SCRIPT
+       ========================================================================== */
+
+    // Global Application State
+    const AppState = {
+      gender: 'F',         // 'M' or 'F'
+      height: 160.0,       // cm
+      weight: 58.0,        // kg
+      waist: 74,           // cm
+      age: 35,             // years
+      bmi: 22.7,
+      idealWeight: 53.8,
+      weightDiff: 4.2,
+      activityLevel: 2,    // 1 to 5
+      deficitGoal: 500,    // 0, 500, 750
+      selectedDay: 0,      // 0 (Mon) to 6 (Sun)
+      calorieTier: 1400,   // 1200, 1400, 1600, 1800
+      savedReportsCount: 0
+    };
+
+    // 7-Day & 4 Calorie Tier Complete Diet Dataset (28 Combinations)
+    const DIET_DATABASE = {
+      // Day 0: Monday
+      0: {
+        tip: "월요일은 주간 활력의 시작! 아침 공복에 미온수 300ml를 마시고 섬유질이 풍부한 나물 반찬으로 첫 끼를 시작하세요.",
+        1200: {
+          breakfast: { title: "아침 (280 kcal)", items: ["귀리현미밥 1/2공기 (100g)", "맑은 콩나물국", "달걀찜 1개 분량", "배추김치 반접시", "오이 생채"] },
+          lunch: { title: "점심 (420 kcal)", items: ["잡곡밥 2/3공기 (140g)", "미역국", "닭가슴살 채소볶음 (80g)", "시금치나물", "깍두기"] },
+          dinner: { title: "저녁 (350 kcal)", items: ["단호박 샐러드 (150g)", "구운 연어 1토막 (60g)", "파프리카 & 방울토마토", "연두부 1팩 (오리엔탈 드레싱)"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["무가당 플레인 요거트 1개 (85g)", "호두 1알"] }
+        },
+        1400: {
+          breakfast: { title: "아침 (330 kcal)", items: ["발아현미밥 2/3공기 (140g)", "두부 맑은장국", "달걀말이 2조각", "김구이 (무염)", "열무김치"] },
+          lunch: { title: "점심 (500 kcal)", items: ["보리잡곡밥 1공기 (180g)", "소고기 무국", "고등어 오븐구이 반토막 (70g)", "도라지생채", "배추김치"] },
+          dinner: { title: "저녁 (420 kcal)", items: ["현미밥 1/2공기 (100g)", "버섯 들깨탕", "닭안심살 채소구이 (80g)", "모둠 쌈채소 & 쌈장 약간"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["제철 사과 반쪽 (100g)", "구운 아몬드 5알"] }
+        },
+        1600: {
+          breakfast: { title: "아침 (380 kcal)", items: ["잡곡밥 1공기 (180g)", "아욱 된장국", "스크램블에그 (달걀 1.5개)", "멸치볶음", "시금치무침"] },
+          lunch: { title: "점심 (580 kcal)", items: ["흑미밥 1공기 (200g)", "육개장 (기름기 걷어낸 살코기)", "두부 부침 2쪽", "치커리 생채", "깍두기"] },
+          dinner: { title: "저녁 (460 kcal)", items: ["발아현미밥 2/3공기 (140g)", "애호박 찌개", "오징어 채소볶음 (100g)", "양배추찜 & 강된장"] },
+          snack: { title: "건강 간식 (180 kcal)", items: ["저지방 우유 1컵 (200ml)", "바나나 반개"] }
+        },
+        1800: {
+          breakfast: { title: "아침 (420 kcal)", items: ["통곡물밥 1공기 (210g)", "쇠고기 미역국", "달걀프라이 1개", "취나물볶음", "배추김치"] },
+          lunch: { title: "점심 (650 kcal)", items: ["찰현미밥 1공기 (210g)", "해물 된장찌개", "제육간장볶음 (기름기 적은 앞다리살 100g)", "상추·깻잎 쌈", "파프리카 무침"] },
+          dinner: { title: "저녁 (530 kcal)", items: ["귀리밥 1공기 (180g)", "맑은 대구매운탕", "소고기 버섯볶음 (80g)", "가지나물", "깍두기"] },
+          snack: { title: "건강 간식 (200 kcal)", items: ["삶은 달걀 1개", "무가당 두유 1팩", "하루견과 1봉"] }
+        }
+      },
+      // Day 1: Tuesday
+      1: {
+        tip: "화요일은 단백질 밸런스 데이! 근육 합성을 위해 매 끼니마다 살코기, 생선, 달걀, 두부 중 1가지를 포함하세요.",
+        1200: {
+          breakfast: { title: "아침 (270 kcal)", items: ["통밀식빵 1쪽", "삶은 달걀 1개", "양상추 방울토마토 샐러드 (발사믹 드레싱)", "블랙커피 또는 보리차"] },
+          lunch: { title: "점심 (430 kcal)", items: ["현미밥 2/3공기 (130g)", "바지락 맑은국", "소고기 채소볶음 (살코기 70g)", "숙주나물", "백김치"] },
+          dinner: { title: "저녁 (350 kcal)", items: ["고구마 1개 (중, 120g)", "닭가슴살 샐러드 (80g)", "오이 스틱", "저지방 요거트 1개"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["방울토마토 15개", "구운 캐슈넛 4알"] }
+        },
+        1400: {
+          breakfast: { title: "아침 (330 kcal)", items: ["귀리밥 2/3공기 (140g)", "북어 콩나물국", "두부조림 2쪽", "호박나물", "배추김치"] },
+          lunch: { title: "점심 (510 kcal)", items: ["보리밥 1공기 (180g)", "순두부 백탕", "닭안심 구이 (90g)", "참나물무침", "총각김치"] },
+          dinner: { title: "저녁 (410 kcal)", items: ["현미밥 1/2공기 (110g)", "소고기 팽이버섯 전골", "생선까스 대신 구운 가자미 1토막", "상추겉절이"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["저지방 그릭요거트 1개", "블루베리 한 줌"] }
+        },
+        1600: {
+          breakfast: { title: "아침 (380 kcal)", items: ["발아현미밥 1공기 (180g)", "달걀 파국", "닭가슴살 소시지 1개", "도토리묵 무침", "배추김치"] },
+          lunch: { title: "점심 (580 kcal)", items: ["잡곡밥 1공기 (200g)", "버섯 된장찌개", "소불고기 (기름 걷은 양념, 100g)", "모둠 쌈", "오이소박이"] },
+          dinner: { title: "저녁 (460 kcal)", items: ["흑미밥 2/3공기 (150g)", "맑은 굴국", "삼치 카레구이 1토막 (90g)", "브로콜리 숙회 & 초고추장 약간"] },
+          snack: { title: "건강 간식 (180 kcal)", items: ["단호박 찜 1조각", "아몬드 브리즈 언스위트"] }
+        },
+        1800: {
+          breakfast: { title: "아침 (420 kcal)", items: ["현미밥 1공기 (210g)", "소고기 미역국", "달걀말이 3쪽", "느타리버섯볶음", "배추김치"] },
+          lunch: { title: "점심 (650 kcal)", items: ["통곡물밥 1공기 (210g)", "추어탕 또는 장어탕 반뚝배기", "닭볶음탕 (살코기 위주 120g)", "봄동 겉절이", "깍두기"] },
+          dinner: { title: "저녁 (530 kcal)", items: ["보리밥 1공기 (200g)", "청국장 찌개", "돼지 목살 그릴구이 (100g)", "파채무침", "열무김치"] },
+          snack: { title: "건강 간식 (200 kcal)", items: ["구운 달걀 2개", "사과 1개"] }
+        }
+      },
+      // Day 2: Wednesday
+      2: {
+        tip: "수요일은 채소 충전의 날! 초록색, 빨간색, 노란색 컬러 푸드로 활성산소를 제거하고 장내 미생물을 돌보세요.",
+        1200: {
+          breakfast: { title: "아침 (280 kcal)", items: ["오트밀 죽 (오트밀 30g + 저지방우유)", "삶은 달걀 1개", "사과 1/4쪽", "시나몬 가루 약간"] },
+          lunch: { title: "점심 (420 kcal)", items: ["보리밥 2/3공기 (130g)", "배춧국", "두부 버섯 두루치기 (100g)", "고사리나물", "깍두기"] },
+          dinner: { title: "저녁 (350 kcal)", items: ["단호박 찜 (130g)", "훈제오리 구이 (기름기 쫙 뺀 것 70g)", "부추무침", "파프리카 샐러드"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["방울토마토 15개", "호두 2알"] }
+        },
+        1400: {
+          breakfast: { title: "아침 (330 kcal)", items: ["현미밥 2/3공기 (140g)", "시래기 된장국", "생선전 2쪽 (키친타월로 기름 제거)", "콩나물무침", "배추김치"] },
+          lunch: { title: "점심 (510 kcal)", items: ["잡곡밥 1공기 (180g)", "소고기 뭇국", "닭안심 채소볶음 (90g)", "미역초무침", "배추김치"] },
+          dinner: { title: "저녁 (410 kcal)", items: ["발아현미밥 1/2공기 (110g)", "연두부 찌개", "조기 구이 1마리", "가지나물", "오이무침"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["무가당 두유 1팩", "볶은 서리태 1스푼"] }
+        },
+        1600: {
+          breakfast: { title: "아침 (380 kcal)", items: ["흑미밥 1공기 (180g)", "콩비지 찌개", "달걀후라이 1개", "취나물무침", "열무김치"] },
+          lunch: { title: "점심 (570 kcal)", items: ["현미밥 1공기 (200g)", "동태찌개", "돈육 수육 4쪽 (살코기 90g) & 새우젓", "상추쌈 & 보쌈김치"] },
+          dinner: { title: "저녁 (460 kcal)", items: ["귀리밥 2/3공기 (150g)", "호박된장찌개", "오징어 데침 (100g) & 초장 약간", "미나리무침"] },
+          snack: { title: "건강 간식 (190 kcal)", items: ["바나나 1개", "저지방 요거트 1개"] }
+        },
+        1800: {
+          breakfast: { title: "아침 (430 kcal)", items: ["잡곡밥 1공기 (210g)", "황태 북어국", "두부달걀 부침 3조각", "시금치된장무침", "배추김치"] },
+          lunch: { title: "점심 (640 kcal)", items: ["발아현미밥 1공기 (210g)", "갈비탕 (기름 걷어낸 살코기 120g)", "더덕구이", "깍두기", "풋고추 & 된장"] },
+          dinner: { title: "저녁 (530 kcal)", items: ["보리밥 1공기 (200g)", "우렁 된장찌개", "오리훈제 부추볶음 (110g)", "모둠 쌈채소", "백김치"] },
+          snack: { title: "건강 간식 (200 kcal)", items: ["우유 1컵 (200ml)", "삶은 고구마 반개", "견과류 1봉"] }
+        }
+      },
+      // Day 3: Thursday
+      3: {
+        tip: "목요일은 저염 실천 데이! 국물 요리는 건더기 위주로 드시고, 찌개 국물을 밥에 말아 드시지 않는 습관을 만드세요.",
+        1200: {
+          breakfast: { title: "아침 (280 kcal)", items: ["고구마 1개 (소, 100g)", "삶은 달걀 1개", "그린 샐러드 (레몬즙 드레싱)", "따뜻한 루이보스티"] },
+          lunch: { title: "점심 (420 kcal)", items: ["잡곡밥 2/3공기 (130g)", "맑은 무채국", "닭가슴살 카레볶음 (80g)", "양배추 샐러드", "열무김치"] },
+          dinner: { title: "저녁 (350 kcal)", items: ["현미밥 1/2공기 (100g)", "맑은 콩나물국", "두부 김치 (들기름에 볶은 김치 & 데친 두부 100g)", "미역줄기볶음"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["무가당 요거트 1개", "블루베리 10알"] }
+        },
+        1400: {
+          breakfast: { title: "아침 (330 kcal)", items: ["현미밥 2/3공기 (140g)", "표고버섯 맑은장국", "달걀찜 1그릇", "김구이", "배추김치"] },
+          lunch: { title: "점심 (510 kcal)", items: ["보리밥 1공기 (180g)", "시래기국", "소고기 사태 장조림 (메추리알 2개 포함)", "참나물", "깍두기"] },
+          dinner: { title: "저녁 (410 kcal)", items: ["귀리밥 1/2공기 (110g)", "맑은 대구매운탕", "닭안심 구이 (80g)", "상추쌈 & 쌈장 약간"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["제철 귤 2개", "아몬드 5알"] }
+        },
+        1600: {
+          breakfast: { title: "아침 (380 kcal)", items: ["발아현미밥 1공기 (180g)", "소고기 콩나물국", "연두부 1팩", "깻잎김치", "호박볶음"] },
+          lunch: { title: "점심 (580 kcal)", items: ["잡곡밥 1공기 (200g)", "된장찌개", "고등어 양념구이 (80g)", "모둠 채소쌈", "배추김치"] },
+          dinner: { title: "저녁 (450 kcal)", items: ["흑미밥 2/3공기 (150g)", "순두부 계란국", "돼지고기 안심 채소볶음 (90g)", "오이소박이"] },
+          snack: { title: "건강 간식 (190 kcal)", items: ["저지방 우유 1컵", "삶은 계란 1개"] }
+        },
+        1800: {
+          breakfast: { title: "아침 (420 kcal)", items: ["통곡물밥 1공기 (210g)", "미역국", "달걀말이 3쪽", "멸치견과류볶음", "배추김치"] },
+          lunch: { title: "점심 (650 kcal)", items: ["보리밥 1공기 (210g)", "부대찌개 대신 맑은 닭곰탕", "소고기 버섯불고기 (110g)", "열무된장무침", "깍두기"] },
+          dinner: { title: "저녁 (530 kcal)", items: ["현미밥 1공기 (200g)", "꽃게 된장찌개", "삼치 소금구이 1토막 (100g)", "봄동 겉절이", "파프리카 스틱"] },
+          snack: { title: "건강 간식 (200 kcal)", items: ["사과 1개", "두유 1팩", "호두 2알"] }
+        }
+      },
+      // Day 4: Friday
+      4: {
+        tip: "금요일은 주말 외식 방어 데이! 저녁 약속이 있다면 점심을 가볍게 조절하고 당류가 많은 음료 대신 탄산수를 선택하세요.",
+        1200: {
+          breakfast: { title: "아침 (270 kcal)", items: ["통밀 토스트 1장", "스크램블에그 1개 분량", "방울토마토 10개", "블랙 아메리카노"] },
+          lunch: { title: "점심 (430 kcal)", items: ["현미밥 2/3공기 (130g)", "두부 쑥갓 맑은국", "닭가슴살 월남쌈 3롤", "오이피클 (저당)", "배추김치"] },
+          dinner: { title: "저녁 (350 kcal)", items: ["소고기 안심 샐러드 (고기 70g + 믹스채소)", "오리엔탈 드레싱 1스푼", "삶은 단호박 1조각"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["구운 아몬드 8알", "탄산수"] }
+        },
+        1400: {
+          breakfast: { title: "아침 (330 kcal)", items: ["잡곡밥 2/3공기 (140g)", "근대 된장국", "삶은 달걀 1개", "미역초무침", "배추김치"] },
+          lunch: { title: "점심 (510 kcal)", items: ["보리밥 1공기 (180g)", "바지락 미역국", "오징어 볶음 (기름 적게, 80g)", "콩나물무침", "열무김치"] },
+          dinner: { title: "저녁 (410 kcal)", items: ["발아현미밥 1/2공기 (110g)", "버섯 맑은전골", "닭다리살 오븐구이 (껍질 제거 90g)", "쌈채소"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["저지방 요거트 1개", "사과 1/2개"] }
+        },
+        1600: {
+          breakfast: { title: "아침 (380 kcal)", items: ["현미밥 1공기 (180g)", "소고기 뭇국", "두부 부침 2장", "시금치무침", "배추김치"] },
+          lunch: { title: "점심 (580 kcal)", items: ["흑미밥 1공기 (200g)", "해물 뚝배기", "제육 깻잎볶음 (기름 적은 부위 90g)", "치커리 생채", "깍두기"] },
+          dinner: { title: "저녁 (450 kcal)", items: ["귀리밥 2/3공기 (150g)", "애호박 된장찌개", "연어 스테이크 1토막 (90g)", "아스파라거스 구이"] },
+          snack: { title: "건강 간식 (190 kcal)", items: ["두유 1팩", "삶은 달걀 1개"] }
+        },
+        1800: {
+          breakfast: { title: "아침 (420 kcal)", items: ["잡곡밥 1공기 (210g)", "북엇국", "달걀후라이 1개 & 햄 1장(데친 것)", "느타리버섯볶음", "배추김치"] },
+          lunch: { title: "점심 (650 kcal)", items: ["발아현미밥 1공기 (210g)", "소고기 샤브샤브 (채소 듬뿍 & 살코기 120g)", "칼국수 면 대신 곤약면 약간", "백김치"] },
+          dinner: { title: "저녁 (530 kcal)", items: ["보리밥 1공기 (200g)", "얼큰 콩나물국", "닭볶음탕 (110g)", "도토리묵 무침", "깍두기"] },
+          snack: { title: "건강 간식 (200 kcal)", items: ["우유 1잔", "바나나 1개", "견과류 1봉"] }
+        }
+      },
+      // Day 5: Saturday
+      5: {
+        tip: "토요일은 웰빙 브런치 & 야외 활동 데이! 온 가족이 함께 건강한 식탁을 차리고 식후 30분 가벼운 트레킹을 즐기세요.",
+        1200: {
+          breakfast: { title: "아침 (280 kcal)", items: ["통밀 팬케이크 1장 (시럽 없이)", "달걀 프라이 1개", "방울토마토 샐러드", "무지방 라떼"] },
+          lunch: { title: "점심 (420 kcal)", items: ["산채 비빔밥 2/3공기 (고추장은 1/2스푼만, 참기름 1작은술)", "맑은 콩나물국", "백김치"] },
+          dinner: { title: "저녁 (350 kcal)", items: ["닭가슴살 샌드위치 (호밀빵 1쪽 오픈형)", "파프리카 & 당근 스틱", "허브티 1잔"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["자몽 반개", "구운 피스타치오 10알"] }
+        },
+        1400: {
+          breakfast: { title: "아침 (330 kcal)", items: ["현미밥 2/3공기 (140g)", "우렁 된장국", "계란말이 2쪽", "오이무침", "배추김치"] },
+          lunch: { title: "점심 (510 kcal)", items: ["보리밥 1공기 (180g)", "해물 순두부찌개", "소고기 버섯 채소볶음 (80g)", "상추쌈", "깍두기"] },
+          dinner: { title: "저녁 (410 kcal)", items: ["발아현미밥 1/2공기 (110g)", "어묵 백탕 (채소 듬뿍)", "고등어 구이 반마리", "열무김치"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["플레인 요거트 1개", "블루베리 한 줌"] }
+        },
+        1600: {
+          breakfast: { title: "아침 (380 kcal)", items: ["잡곡밥 1공기 (180g)", "황태 미역국", "연두부 1팩 & 양념간장", "멸치볶음", "배추김치"] },
+          lunch: { title: "점심 (580 kcal)", items: ["찰보리밥 1공기 (200g)", "버섯 불고기 전골 (살코기 100g)", "미나리 전 1장", "총각김치"] },
+          dinner: { title: "저녁 (450 kcal)", items: ["흑미밥 2/3공기 (150g)", "바지락 칼국수 대신 맑은 조개탕", "오징어 숙회 (90g)", "양배추쌈"] },
+          snack: { title: "건강 간식 (190 kcal)", items: ["제철 과일 1접시", "삶은 달걀 1개"] }
+        },
+        1800: {
+          breakfast: { title: "아침 (420 kcal)", items: ["현미밥 1공기 (210g)", "소고기 뭇국", "치즈 달걀말이 3쪽", "시금치나물", "배추김치"] },
+          lunch: { title: "점심 (650 kcal)", items: ["통곡물밥 1공기 (210g)", "장어구이 (양념 살짝, 100g)", "생강채 & 깻잎 쌈", "된장찌개", "깍두기"] },
+          dinner: { title: "저녁 (530 kcal)", items: ["보리밥 1공기 (200g)", "해물 매운탕", "돼지 안심 찹스테이크 (110g)", "구운 채소 모둠", "열무김치"] },
+          snack: { title: "건강 간식 (200 kcal)", items: ["우유 1컵", "고구마 1개", "호두 2알"] }
+        }
+      },
+      // Day 6: Sunday
+      6: {
+        tip: "일요일은 클린 & 리셋 데이! 다음 한 주를 위해 속을 편안하게 해주는 발효식품과 따뜻한 채소 맑은국으로 정돈하세요.",
+        1200: {
+          breakfast: { title: "아침 (280 kcal)", items: ["단호박 죽 1그릇 (설탕 무첨가)", "삶은 달걀 1개", "나박김치 (국물 적게)", "따뜻한 보리차"] },
+          lunch: { title: "점심 (420 kcal)", items: ["현미밥 2/3공기 (130g)", "맑은 버섯 들깨국", "흰살생선 가자미구이 1토막", "취나물", "배추김치"] },
+          dinner: { title: "저녁 (350 kcal)", items: ["닭가슴살 샐러드 (80g)", "군고구마 1/2개", "방울토마토 10개", "플레인 요거트 1개"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["키위 1개", "아몬드 5알"] }
+        },
+        1400: {
+          breakfast: { title: "아침 (330 kcal)", items: ["귀리밥 2/3공기 (140g)", "콩나물 맑은국", "두부 달걀 부침 2쪽", "김구이", "배추김치"] },
+          lunch: { title: "점심 (510 kcal)", items: ["잡곡밥 1공기 (180g)", "소고기 배춧국", "닭안심 채소조림 (90g)", "브로콜리 숙회", "열무김치"] },
+          dinner: { title: "저녁 (410 kcal)", items: ["현미밥 1/2공기 (110g)", "청국장 찌개 (염도 낮춘 것)", "조기 1마리 구이", "모둠 쌈 & 쌈장"] },
+          snack: { title: "건강 간식 (150 kcal)", items: ["사과 반쪽", "볶은 콩 한 줌"] }
+        },
+        1600: {
+          breakfast: { title: "아침 (380 kcal)", items: ["발아현미밥 1공기 (180g)", "순두부 맑은국", "달걀찜 1그릇", "도라지볶음", "배추김치"] },
+          lunch: { title: "점심 (580 kcal)", items: ["흑미밥 1공기 (200g)", "아욱 된장국", "돼지고기 사태 편육 (90g)", "부추 겉절이", "깍두기"] },
+          dinner: { title: "저녁 (450 kcal)", items: ["보리밥 2/3공기 (150g)", "버섯 찌개", "삼치 오븐구이 (90g)", "상추쌈 & 된장"] },
+          snack: { title: "건강 간식 (190 kcal)", items: ["두유 1팩", "바나나 반개"] }
+        },
+        1800: {
+          breakfast: { title: "아침 (420 kcal)", items: ["통곡물밥 1공기 (210g)", "쇠고기 무국", "달걀후라이 1개 & 김", "호박나물", "배추김치"] },
+          lunch: { title: "점심 (650 kcal)", items: ["현미밥 1공기 (210g)", "해물 짬뽕 대신 맑은 해물탕", "닭가슴살 찹스테이크 (110g)", "치커리 무침", "깍두기"] },
+          dinner: { title: "저녁 (530 kcal)", items: ["귀리밥 1공기 (200g)", "된장찌개", "소고기 로스구이 (살코기 110g)", "파채무침", "모둠 쌈"] },
+          snack: { title: "건강 간식 (200 kcal)", items: ["우유 1컵", "삶은 달걀 1개", "하루견과 1봉"] }
+        }
+      }
+    };
+
+    // 4-7-8 Breathing Guide State
+    let breathInterval = null;
+    let breathPhase = 0; // 0: Inhale (4s), 1: Hold (7s), 2: Exhale (8s)
+    let breathCounter = 4;
+    let breathCycle = 0;
+    let isBreathingActive = false;
+
+    /* ==========================================================================
+       CALCULATION FUNCTIONS (HOISTED & ROBUST)
+       ========================================================================== */
+
+    function recalcBMI() {
+      const hM = AppState.height / 100.0;
+      const bmi = AppState.weight / (hM * hM);
+      AppState.bmi = Math.round(bmi * 10) / 10;
+
+      // Ideal Body Weight: Male = h^2 * 22, Female = h^2 * 21
+      const factor = (AppState.gender === 'M') ? 22 : 21;
+      const ideal = (hM * hM) * factor;
+      AppState.idealWeight = Math.round(ideal * 10) / 10;
+
+      // Weight Difference
+      AppState.weightDiff = Math.round((AppState.weight - AppState.idealWeight) * 10) / 10;
+
+      // PIBW = (Current / Ideal) * 100
+      const pibw = Math.round((AppState.weight / AppState.idealWeight) * 1000) / 10;
+
+      // Update DOM
+      const resBmiNum = document.getElementById('resBmiNum');
+      const resBmiCategory = document.getElementById('resBmiCategory');
+      const resBmiBadge = document.getElementById('resBmiBadge');
+      const resIdealWeight = document.getElementById('resIdealWeight');
+      const resFormulaNote = document.getElementById('resFormulaNote');
+      const resWeightDiff = document.getElementById('resWeightDiff');
+      const resWeightDiffNote = document.getElementById('resWeightDiffNote');
+      const resPibw = document.getElementById('resPibw');
+      const resPibwStatus = document.getElementById('resPibwStatus');
+      const bmiNeedle = document.getElementById('bmiNeedle');
+
+      if (resBmiNum) resBmiNum.textContent = AppState.bmi.toFixed(1);
+      if (resIdealWeight) resIdealWeight.textContent = AppState.idealWeight.toFixed(1);
+      if (resFormulaNote) {
+        resFormulaNote.textContent = AppState.gender === 'M' ? '신장(m)² × 22' : '신장(m)² × 21';
+      }
+
+      if (resWeightDiff) {
+        if (AppState.weightDiff > 0) {
+          resWeightDiff.textContent = `+${AppState.weightDiff.toFixed(1)} kg`;
+          if (resWeightDiffNote) resWeightDiffNote.textContent = '완만 감량 권장';
+        } else if (AppState.weightDiff < 0) {
+          resWeightDiff.textContent = `${AppState.weightDiff.toFixed(1)} kg`;
+          if (resWeightDiffNote) resWeightDiffNote.textContent = '건강 증량 권장';
+        } else {
+          resWeightDiff.textContent = '0.0 kg';
+          if (resWeightDiffNote) resWeightDiffNote.textContent = '표준 체중 유지';
+        }
+      }
+
+      if (resPibw) resPibw.textContent = pibw.toFixed(1);
+      if (resPibwStatus) {
+        if (pibw < 90) resPibwStatus.textContent = '저체중 범위';
+        else if (pibw <= 110) resPibwStatus.textContent = '정상 체중';
+        else if (pibw <= 120) resPibwStatus.textContent = '과체중 단계';
+        else resPibwStatus.textContent = '비만 관리 필요';
+      }
+
+      // Classification based on Korean Obesity Society standards
+      // Underweight < 18.5, Normal 18.5 - 22.9, Pre-obese 23.0 - 24.9, Obese 1 25.0 - 29.9, Obese 2 >= 30.0 (35+ Severe)
+      let catText = '정상 체중';
+      let badgeClass = 'status-badge status-normal';
+      let needleDeg = -45; // default center
+
+      if (AppState.bmi < 18.5) {
+        catText = '저체중 (영양 보충 권장)';
+        badgeClass = 'status-badge status-underweight';
+        // Map 14 - 18.5 to -80deg to -45deg
+        needleDeg = -85 + ((AppState.bmi - 14) / 4.5) * 35;
+      } else if (AppState.bmi <= 22.9) {
+        catText = '정상 체중 (건강 유지)';
+        badgeClass = 'status-badge status-normal';
+        // Map 18.5 - 22.9 to -45deg to -10deg
+        needleDeg = -45 + ((AppState.bmi - 18.5) / 4.4) * 35;
+      } else if (AppState.bmi <= 24.9) {
+        catText = '비만전단계 (과체중 주의)';
+        badgeClass = 'status-badge status-overweight';
+        // Map 23 - 24.9 to -10deg to 15deg
+        needleDeg = -10 + ((AppState.bmi - 23.0) / 1.9) * 25;
+      } else if (AppState.bmi <= 29.9) {
+        catText = '1단계 비만 (식습관 개선)';
+        badgeClass = 'status-badge status-obese1';
+        // Map 25 - 29.9 to 15deg to 55deg
+        needleDeg = 15 + ((AppState.bmi - 25.0) / 4.9) * 40;
+      } else if (AppState.bmi < 35.0) {
+        catText = '2단계 비만 (적극 감량 필요)';
+        badgeClass = 'status-badge status-obese2';
+        needleDeg = 55 + Math.min(25, ((AppState.bmi - 30.0) / 5.0) * 25);
+      } else {
+        catText = '고도비만 (전문 진료 및 관리)';
+        badgeClass = 'status-badge status-obese2';
+        needleDeg = 85;
+      }
+
+      if (resBmiCategory) resBmiCategory.textContent = catText;
+      if (resBmiBadge) resBmiBadge.className = badgeClass;
+      if (bmiNeedle) {
+        needleDeg = Math.max(-88, Math.min(88, needleDeg));
+        bmiNeedle.style.transform = `rotate(${needleDeg}deg)`;
+      }
+
+      // Check Waist circumference
+      checkWaistCircumference();
+
+      // Recalculate Energy Requirements
+      recalcEnergy();
+    }
+
+    function checkWaistCircumference() {
+      const isMale = AppState.gender === 'M';
+      const threshold = isMale ? 90 : 85;
+      const waistBox = document.getElementById('waistAlertBox');
+      const waistTitle = document.getElementById('waistAlertTitle');
+      const waistText = document.getElementById('waistAlertText');
+
+      if (!waistBox || !waistTitle || !waistText) return;
+
+      if (AppState.waist >= threshold) {
+        waistBox.className = 'waist-alert-box waist-warning';
+        waistTitle.textContent = '복부비만 주의 (내장지방 경고):';
+        waistText.textContent = `${isMale ? '남성' : '여성'} 복부비만 기준치(${threshold}cm 이상)를 초과하여 심뇌혈관질환 및 내장지방 대사증후군 위험이 있습니다.`;
+      } else {
+        waistBox.className = 'waist-alert-box waist-normal';
+        waistTitle.textContent = '복부둘레 정상:';
+        waistText.textContent = `${isMale ? '남성' : '여성'} 복부비만 기준치(${threshold}cm 미만)를 안정적으로 유지하고 있어 내장지방 위험이 적습니다.`;
+      }
+    }
+
+    function recalcEnergy() {
+      // Activity Coefficients based on standard kcal/kg:
+      // 1: 27.5 kcal/kg, 2: 32.5, 3: 37.5, 4: 42.5, 5: 47.5
+      const actKcalMap = { 1: 27.5, 2: 32.5, 3: 37.5, 4: 42.5, 5: 47.5 };
+      const rate = actKcalMap[AppState.activityLevel] || 32.5;
+
+      // Korean Dietary Reference EER (Estimated Energy Requirement) calculation:
+      // Male PA: 1: 1.0, 2: 1.11, 3: 1.25, 4: 1.48
+      // Female PA: 1: 1.0, 2: 1.12, 3: 1.27, 4: 1.45
+      const hM = AppState.height / 100.0;
+      let pa = 1.12;
+      if (AppState.gender === 'M') {
+        const paM = { 1: 1.0, 2: 1.11, 3: 1.25, 4: 1.48, 5: 1.48 };
+        pa = paM[AppState.activityLevel] || 1.11;
+      } else {
+        const paF = { 1: 1.0, 2: 1.12, 3: 1.27, 4: 1.45, 5: 1.45 };
+        pa = paF[AppState.activityLevel] || 1.12;
+      }
+
+      let eer = 0;
+      if (AppState.gender === 'M') {
+        eer = 662 - (9.53 * AppState.age) + pa * (15.91 * AppState.weight + 539.6 * hM);
+      } else {
+        eer = 354 - (6.91 * AppState.age) + pa * (9.36 * AppState.weight + 726 * hM);
+      }
+
+      // Blend standard ideal weight multiplier with EER
+      const stdKcal = AppState.idealWeight * rate;
+      const maintainKcal = Math.round((stdKcal * 0.4 + eer * 0.6) / 50) * 50;
+
+      const targetKcal = Math.max(1200, maintainKcal - AppState.deficitGoal);
+
+      const resMaintainCal = document.getElementById('resMaintainCal');
+      const resDeficitCal = document.getElementById('resDeficitCal');
+      const resTargetCal = document.getElementById('resTargetCal');
+      const resLossRate = document.getElementById('resLossRate');
+      const resOneMonthWeight = document.getElementById('resOneMonthWeight');
+
+      if (resMaintainCal) resMaintainCal.textContent = maintainKcal.toLocaleString();
+      if (resDeficitCal) resDeficitCal.textContent = AppState.deficitGoal > 0 ? `-${AppState.deficitGoal}` : '0';
+      if (resTargetCal) resTargetCal.textContent = targetKcal.toLocaleString();
+
+      if (resLossRate) {
+        if (AppState.deficitGoal === 500) resLossRate.textContent = '주당 약 0.5kg (월 2.0kg↓)';
+        else if (AppState.deficitGoal === 750) resLossRate.textContent = '주당 약 0.75kg (월 3.0kg↓)';
+        else resLossRate.textContent = '체중 유지 (0kg 변동)';
+      }
+
+      if (resOneMonthWeight) {
+        let lossAmount = 0;
+        if (AppState.deficitGoal === 500) lossAmount = 2.0;
+        else if (AppState.deficitGoal === 750) lossAmount = 3.0;
+        const projected = Math.max(AppState.idealWeight - 2, AppState.weight - lossAmount);
+        resOneMonthWeight.textContent = projected.toFixed(1);
+      }
+    }
+
+    /* ==========================================================================
+       USER INPUT HANDLERS
+       ========================================================================== */
+
+    function setGender(g) {
+      AppState.gender = g;
+      const btnM = document.getElementById('btnGenderM');
+      const btnF = document.getElementById('btnGenderF');
+      if (btnM && btnF) {
+        if (g === 'M') {
+          btnM.classList.add('active');
+          btnF.classList.remove('active');
+        } else {
+          btnF.classList.add('active');
+          btnM.classList.remove('active');
+        }
+      }
+      recalcBMI();
+    }
+
+    function syncMeasurementInputs(rangeId, editId, value) {
+      const range = document.getElementById(rangeId);
+      const edit = document.getElementById(editId);
+      if (range) range.value = value;
+      if (edit && edit !== document.activeElement) edit.value = value;
+    }
+
+    function onHeightChange(val) {
+      const n = Number(val);
+      if (!Number.isFinite(n) || n < 130 || n > 210) return;
+      AppState.height = n;
+      syncMeasurementInputs('inputHeight', 'editHeight', n);
+      const disp = document.getElementById('valHeightDisp');
+      if (disp) disp.textContent = n.toFixed(1);
+      recalcBMI();
+    }
+
+    function onWeightChange(val) {
+      const n = Number(val);
+      if (!Number.isFinite(n) || n < 35 || n > 150) return;
+      AppState.weight = n;
+      syncMeasurementInputs('inputWeight', 'editWeight', n);
+      const disp = document.getElementById('valWeightDisp');
+      if (disp) disp.textContent = n.toFixed(1);
+      recalcBMI();
+    }
+
+    function onWaistChange(val) {
+      const n = Number(val);
+      if (!Number.isFinite(n) || n < 50 || n > 130) return;
+      AppState.waist = n;
+      syncMeasurementInputs('inputWaist', 'editWaist', n);
+      const disp = document.getElementById('valWaistDisp');
+      if (disp) disp.textContent = n;
+      checkWaistCircumference();
+    }
+
+    function onAgeChange(val) {
+      const n = Number(val);
+      if (!Number.isFinite(n) || n < 18 || n > 80) return;
+      AppState.age = n;
+      syncMeasurementInputs('inputAge', 'editAge', n);
+      const disp = document.getElementById('valAgeDisp');
+      if (disp) disp.textContent = n;
+      recalcEnergy();
+    }
+
+    function switchRiskTab(tabName) {
+      const btnCauses = document.getElementById('tabBtnCauses');
+      const btnRisks = document.getElementById('tabBtnRisks');
+      const contentCauses = document.getElementById('tabContentCauses');
+      const contentRisks = document.getElementById('tabContentRisks');
+
+      if (!btnCauses || !btnRisks || !contentCauses || !contentRisks) return;
+
+      if (tabName === 'causes') {
+        btnCauses.classList.add('active');
+        btnRisks.classList.remove('active');
+        contentCauses.style.display = 'grid';
+        contentRisks.style.display = 'none';
+      } else {
+        btnRisks.classList.add('active');
+        btnCauses.classList.remove('active');
+        contentCauses.style.display = 'none';
+        contentRisks.style.display = 'grid';
+      }
+    }
+
+    function setActivityLevel(lvl) {
+      AppState.activityLevel = lvl;
+      for (let i = 1; i <= 5; i++) {
+        const el = document.getElementById(`actOpt${i}`);
+        if (el) {
+          if (i === lvl) el.classList.add('active');
+          else el.classList.remove('active');
+        }
+      }
+      recalcEnergy();
+    }
+
+    function setDeficitGoal(goal) {
+      AppState.deficitGoal = goal;
+      const b0 = document.getElementById('btnDeficit0');
+      const b500 = document.getElementById('btnDeficit500');
+      const b750 = document.getElementById('btnDeficit750');
+
+      if (b0) b0.classList.toggle('active', goal === 0);
+      if (b500) b500.classList.toggle('active', goal === 500);
+      if (b750) b750.classList.toggle('active', goal === 750);
+
+      recalcEnergy();
+    }
+
+    /* ==========================================================================
+       MEAL PLAN RENDERING
+       ========================================================================== */
+
+    function selectDay(dayIdx) {
+      AppState.selectedDay = dayIdx;
+      for (let i = 0; i <= 6; i++) {
+        const btn = document.getElementById(`dayTab${i}`);
+        if (btn) btn.classList.toggle('active', i === dayIdx);
+      }
+      renderMealPlan();
+    }
+
+    function selectCalorieTier(tier) {
+      AppState.calorieTier = tier;
+      const tiers = [1200, 1400, 1600, 1800];
+      tiers.forEach(t => {
+        const btn = document.getElementById(`calPill${t}`);
+        if (btn) btn.classList.toggle('active', t === tier);
+      });
+      renderMealPlan();
+    }
+
+    function renderMealPlan() {
+      const container = document.getElementById('mealsGridContainer');
+      const tipText = document.getElementById('dailyTipText');
+      if (!container) return;
+
+      const dayData = DIET_DATABASE[AppState.selectedDay] || DIET_DATABASE[0];
+      const tierData = dayData[AppState.calorieTier] || dayData[1400];
+
+      if (tipText) {
+        tipText.textContent = dayData.tip;
+      }
+
+      const mealConfigs = [
+        { key: 'breakfast', icon: 'sunrise', tag: '아침 식사' },
+        { key: 'lunch', icon: 'sun', tag: '점심 식사' },
+        { key: 'dinner', icon: 'sunset', tag: '저녁 식사' },
+        { key: 'snack', icon: 'apple', tag: '건강 간식' }
+      ];
+
+      let html = '';
+      mealConfigs.forEach(cfg => {
+        const m = tierData[cfg.key];
+        if (!m) return;
+
+        const itemsHtml = m.items.map(it => `<li>${it}</li>`).join('');
+
+        html += `
+          <div class="meal-box">
+            <div class="meal-box-header">
+              <span class="meal-timing">
+                <i data-lucide="${cfg.icon}" style="width: 18px; height: 18px; color: var(--primary);"></i>
+                ${m.title}
+              </span>
+              <span class="meal-cal-tag">${cfg.tag}</span>
+            </div>
+            <ul class="meal-items-list">
+              ${itemsHtml}
+            </ul>
+            <div class="meal-nutrition-bar">
+              단백질 &amp; 복합탄수화물 &amp; 제철 채소 균형 배합
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      if (window.lucide && window.lucide.createIcons) {
+        window.lucide.createIcons();
+      }
+    }
+
+    /* ==========================================================================
+       4-7-8 MINDFUL BREATHING PACER WIDGET
+       ========================================================================== */
+
+    function toggleBreathingGuide() {
+      if (isBreathingActive) {
+        stopBreathing();
+      } else {
+        startBreathing();
+      }
+    }
+
+    function startBreathing() {
+      isBreathingActive = true;
+      breathCycle = 1;
+      breathPhase = 0; // 0: Inhale (4s)
+      breathCounter = 4;
+
+      const btnText = document.getElementById('btnBreatheText');
+      if (btnText) btnText.textContent = '호흡 가이드 멈춤';
+
+      updateBreathingUI();
+
+      clearInterval(breathInterval);
+      breathInterval = setInterval(() => {
+        breathCounter--;
+
+        if (breathCounter <= 0) {
+          // Advance phase
+          if (breathPhase === 0) {
+            // Finished Inhale -> Start Hold (7s)
+            breathPhase = 1;
+            breathCounter = 7;
+          } else if (breathPhase === 1) {
+            // Finished Hold -> Start Exhale (8s)
+            breathPhase = 2;
+            breathCounter = 8;
+          } else {
+            // Finished Exhale -> Next cycle
+            breathCycle++;
+            if (breathCycle > 4) {
+              stopBreathing();
+              showToast('✨ 4-7-8 심신 안정 호흡 4회를 성공적으로 마쳤습니다!');
+              return;
+            }
+            breathPhase = 0;
+            breathCounter = 4;
+          }
+        }
+
+        updateBreathingUI();
+      }, 1000);
+    }
+
+    function stopBreathing() {
+      isBreathingActive = false;
+      clearInterval(breathInterval);
+
+      const btnText = document.getElementById('btnBreatheText');
+      if (btnText) btnText.textContent = '호흡 가이드 시작';
+
+      const actText = document.getElementById('breathActionText');
+      const numText = document.getElementById('breathTimerNum');
+      const ring = document.getElementById('breathPulseRing');
+      const cycleText = document.getElementById('breathCycleText');
+
+      if (actText) actText.textContent = '준비';
+      if (numText) numText.textContent = '4';
+      if (ring) {
+        ring.style.transition = 'transform 0.5s ease';
+        ring.style.transform = 'scale(0.7)';
+      }
+      if (cycleText) cycleText.textContent = `진행: ${breathCycle > 4 ? 4 : breathCycle} / 4회`;
+    }
+
+    function updateBreathingUI() {
+      const actText = document.getElementById('breathActionText');
+      const numText = document.getElementById('breathTimerNum');
+      const ring = document.getElementById('breathPulseRing');
+      const cycleText = document.getElementById('breathCycleText');
+
+      if (numText) numText.textContent = breathCounter;
+      if (cycleText) cycleText.textContent = `진행: ${breathCycle} / 4회`;
+
+      if (breathPhase === 0) {
+        if (actText) actText.textContent = '들숨 (코)';
+        if (ring) {
+          ring.style.transition = 'transform 4s ease-out';
+          ring.style.transform = 'scale(1.25)';
+        }
+      } else if (breathPhase === 1) {
+        if (actText) actText.textContent = '숨 멈춤';
+        if (ring) {
+          ring.style.transition = 'none';
+          ring.style.transform = 'scale(1.25)';
+        }
+      } else {
+        if (actText) actText.textContent = '날숨 (입)';
+        if (ring) {
+          ring.style.transition = 'transform 8s ease-in';
+          ring.style.transform = 'scale(0.7)';
+        }
+      }
+    }
+
+    /* ==========================================================================
+       BOTTOM BUTTONS ACTIONS (ROBUST & PERSISTENT)
+       ========================================================================== */
+
+    async function saveHealthReport() {
+      const now = new Date();
+      const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      const reportData = {
+        timestamp: timeStr,
+        gender: AppState.gender === 'M' ? '남성' : '여성',
+        height: AppState.height,
+        weight: AppState.weight,
+        waist: AppState.waist,
+        age: AppState.age,
+        bmi: AppState.bmi,
+        idealWeight: AppState.idealWeight,
+        weightDiff: AppState.weightDiff,
+        activityLevel: AppState.activityLevel,
+        deficitGoal: AppState.deficitGoal,
+        calorieTier: AppState.calorieTier,
+        selectedDay: AppState.selectedDay
+      };
+
+      // 1. Try Gemini Notebook Shim API Persistence
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+          await window.notebookAppApi.setAppState({
+            lastSavedReport: reportData
+          });
+        }
+      } catch (err) {
+        console.warn('Notebook shim save error (fallback to local):', err);
+      }
+
+      // 2. Save in this browser so the report remains available after refresh.
+      AppState.lastSavedReport = reportData;
+      try {
+        localStorage.setItem('healthyLife_lastSavedReport', JSON.stringify(reportData));
+      } catch (err) {
+        console.warn('Local storage save unavailable:', err);
+      }
+
+      // 3. Show the saved report and confirmation.
+      openSavedModal(reportData);
+      showToast('✅ 개인 맞춤 건강리포트가 저장되었습니다.');
+    }
+
+    // Load the previously saved report and display it in the report viewer.
+    async function loadSavedHealthReport() {
+      let savedReport = null;
+
+      // Prefer the browser's persistent local storage.
+      try {
+        const raw = localStorage.getItem('healthyLife_lastSavedReport');
+        if (raw) savedReport = JSON.parse(raw);
+      } catch (err) {
+        console.warn('Could not read the saved report from local storage:', err);
+      }
+
+      // If local storage has no report, try the notebook persistence API.
+      if (!savedReport && window.notebookAppApi &&
+          typeof window.notebookAppApi.getAppState === 'function') {
+        try {
+          const savedState = await window.notebookAppApi.getAppState();
+          if (savedState && savedState.lastSavedReport) {
+            savedReport = savedState.lastSavedReport;
+          }
+        } catch (err) {
+          console.warn('Could not read the saved report from notebook storage:', err);
+        }
+      }
+
+      if (!savedReport || !savedReport.timestamp) {
+        alert('저장된 건강리포트가 없습니다. 먼저 “건강리포트 저장” 버튼을 눌러 주세요.');
+        return;
+      }
+
+      AppState.lastSavedReport = savedReport;
+      openSavedModal(savedReport);
+    }
+
+    function openSavedModal(data) {
+      const modal = document.getElementById('savedReportModal');
+      const content = document.getElementById('modalReportContent');
+      const timeEl = document.getElementById('modalSaveTimestamp');
+
+      if (!modal || !content) return;
+
+      if (timeEl) timeEl.textContent = `최근 저장: ${data.timestamp}`;
+
+      const dayNames = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+      const curDayName = dayNames[data.selectedDay] || '월요일';
+
+      content.innerHTML = `
+        <div style="background: var(--surface-container-low); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+          <h4 style="font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">📊 신체 지표 평가 요약</h4>
+          <p>• 기본 인적: <strong>${data.gender} (${data.age}세)</strong> / 신장 <strong>${data.height} cm</strong> / 체중 <strong>${data.weight} kg</strong></p>
+          <p>• 체질량지수 (BMI): <strong>${data.bmi} kg/m²</strong> (목표 정상 18.5~22.9)</p>
+          <p>• 표준 체중: <strong>${data.idealWeight} kg</strong> (현재 조절 필요: <strong>${data.weightDiff > 0 ? '+'+data.weightDiff : data.weightDiff} kg</strong>)</p>
+          <p>• 복부 허리둘레: <strong>${data.waist} cm</strong> (${data.waist >= (data.gender === '남성' ? 90 : 85) ? '복부비만 주의' : '정상'})</p>
+        </div>
+        <div style="background: var(--surface-container-low); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+          <h4 style="font-weight: 700; color: var(--tertiary); margin-bottom: 0.5rem;">🥗 에너지 &amp; 추천 식단 플랜</h4>
+          <p>• 선택 활동 수준: <strong>${data.activityLevel}단계</strong></p>
+          <p>• 설정 감량 차감량: <strong>-${data.deficitGoal} kcal/일</strong> (주당 0.5~0.7kg 감량 권장)</p>
+          <p>• 추천 웰빙 식단: <strong>${curDayName} / ${data.calorieTier} kcal</strong> 맞춤 균형단</p>
+        </div>
+        <div style="font-size: 0.8125rem; color: var(--on-surface-variant);">
+          💡 위 리포트는 평생 건강 관리를 위한 지표이며, 필요 시 언제든지 하단의 '건강요약서 다운로드' 또는 'PDF 인쇄' 버튼을 통해 문서로 보관하실 수 있습니다.
+        </div>
+      `;
+
+      modal.classList.add('open');
+      if (window.lucide && window.lucide.createIcons) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function closeSavedModal() {
+      const modal = document.getElementById('savedReportModal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function downloadHealthSummary() {
+      const dayNames = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+      const curDayName = dayNames[AppState.selectedDay] || '월요일';
+      const curDayData = DIET_DATABASE[AppState.selectedDay] || DIET_DATABASE[0];
+      const curTierData = curDayData[AppState.calorieTier] || curDayData[1400];
+
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일`;
+
+      // Build structured text document
+      const summaryText = `=====================================================
+[건강한 삶을 위하여 - 개인 맞춤 건강 요약서]
+발행 일자: ${dateStr}
+=====================================================
+
+1. 개인 신체 지표 분석
+- 성별 및 연령: ${AppState.gender === 'M' ? '남성' : '여성'} / 만 ${AppState.age}세
+- 신장 / 체중: ${AppState.height.toFixed(1)} cm / ${AppState.weight.toFixed(1)} kg
+- 체질량지수(BMI): ${AppState.bmi.toFixed(1)} kg/m²
+  * 판정: ${document.getElementById('resBmiCategory')?.textContent || '정상'}
+  * 한국인 정상 범위: 18.5 ~ 22.9 kg/m² (23 이상 비만전단계, 25 이상 비만)
+- 표준 체중: ${AppState.idealWeight.toFixed(1)} kg (${AppState.gender === 'M' ? '키m² × 22' : '키m² × 21'})
+- 체중 조절 목표치: ${AppState.weightDiff > 0 ? '+' : ''}${AppState.weightDiff.toFixed(1)} kg
+- 허리둘레: ${AppState.waist} cm (${AppState.waist >= (AppState.gender === 'M' ? 90 : 85) ? '복부비만 관리 필요' : '정상 범위 유지'})
+
+2. 활동량 및 에너지 섭취 지침
+- 활동 수준: ${AppState.activityLevel}단계
+- 하루 유지 필요 열량: ${document.getElementById('resMaintainCal')?.textContent || '1,850'} kcal
+- 안전 감량 목표: 하루 ${AppState.deficitGoal} kcal 차감 (주당 약 0.5~0.7kg 감량)
+- 권장 일일 목표 섭취 열량: ${document.getElementById('resTargetCal')?.textContent || '1,350'} kcal
+
+3. 추천 맞춤 식단 (${curDayName} / ${AppState.calorieTier} kcal)
+[아침] ${curTierData.breakfast.title}
+  - ${curTierData.breakfast.items.join('\n  - ')}
+
+[점심] ${curTierData.lunch.title}
+  - ${curTierData.lunch.items.join('\n  - ')}
+
+[저녁] ${curTierData.dinner.title}
+  - ${curTierData.dinner.items.join('\n  - ')}
+
+[간식] ${curTierData.snack.title}
+  - ${curTierData.snack.items.join('\n  - ')}
+
+* 오늘의 영양 가이드:
+  ${curDayData.tip}
+
+4. 규칙적인 운동 및 스트레스 관리 수칙
+- 유산소 운동: 중강도 주 150분 이상 (빠르게 걷기, 조깅, 수영 등)
+- 근력 운동: 주 2~3회 전신 근력 강화 (기초대사량 유지 및 요요 방지)
+- 코르티솔/렙틴 호르몬 안정: 충분한 수면(7~8시간)과 감정적 폭식 예방
+- 절주 실천: 알코올(1군 발암물질, 7kcal/g) 자제 및 음주 강요 문화 탈피
+- 4-7-8 심신 이완 호흡법 실천
+
+=====================================================
+건강한 삶을 위하여 포털 (For a Healthy Life)
+보건복지부 및 한국인 영양소 섭취기준 가이드 준용
+=====================================================`;
+
+      // 1. Try Notebook Shim triggerFileDownload if available
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+          window.notebookAppApi.triggerFileDownload({
+            filename: `건강한삶을위하여_개인건강요약서_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.txt`,
+            content: summaryText,
+            contentType: 'text/plain;charset=utf-8',
+            encoding: 'utf-8'
+          });
+          showToast('📥 건강요약서가 성공적으로 다운로드되었습니다!');
+          return;
+        }
+      } catch (err) {
+        console.warn('Notebook triggerFileDownload fallback to Blob:', err);
+      }
+
+      // 2. Blob fallback download
+      try {
+        const blob = new Blob([summaryText], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `건강한삶을위하여_개인건강요약서_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Revoke after the browser has had time to start the download.
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+
+        showToast('📥 건강요약서 다운로드를 시작했습니다.');
+      } catch (e) {
+        alert('다운로드를 생성할 수 없습니다. 팝업 차단을 확인해 주세요.');
+      }
+    }
+
+    function printReport() {
+      // Opens the browser print dialog. Select "PDF로 저장" to create a PDF.
+      try {
+        window.focus();
+        window.print();
+      } catch (err) {
+        console.error('Print dialog could not be opened:', err);
+        alert('인쇄 창을 열 수 없습니다. 브라우저 메뉴에서 인쇄(Ctrl+P)를 선택해 주세요.');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast) return;
+
+      if (toastMsg) toastMsg.textContent = msg;
+      toast.classList.add('visible');
+
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 3500);
+    }
+
+    /* ==========================================================================
+       INITIALIZATION
+       ========================================================================== */
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize Lucide Icons
+      if (window.lucide && window.lucide.createIcons) {
+        window.lucide.createIcons();
+      }
+
+      // Restore the most recently saved report from this browser when available.
+      try {
+        const localReport = localStorage.getItem('healthyLife_lastSavedReport');
+        if (localReport) {
+          const parsedReport = JSON.parse(localReport);
+          if (parsedReport && parsedReport.timestamp) {
+            AppState.lastSavedReport = parsedReport;
+          }
+        }
+      } catch (e) {
+        console.warn('Local report restore unavailable:', e);
+      }
+
+      // Check for saved state from Gemini Notebook Shim API
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && saved.lastSavedReport) {
+            const r = saved.lastSavedReport;
+            if (r.gender) AppState.gender = r.gender === '남성' ? 'M' : 'F';
+            if (r.height) AppState.height = r.height;
+            if (r.weight) AppState.weight = r.weight;
+            if (r.waist) AppState.waist = r.waist;
+            if (r.age) AppState.age = r.age;
+            if (r.activityLevel) AppState.activityLevel = r.activityLevel;
+            if (r.deficitGoal !== undefined) AppState.deficitGoal = r.deficitGoal;
+            if (r.calorieTier) AppState.calorieTier = r.calorieTier;
+            if (r.selectedDay !== undefined) AppState.selectedDay = r.selectedDay;
+
+            // Sync input controls with restored state
+            const inH = document.getElementById('inputHeight');
+            const inW = document.getElementById('inputWeight');
+            const inWa = document.getElementById('inputWaist');
+            const inA = document.getElementById('inputAge');
+            if (inH) inH.value = AppState.height;
+            if (inW) inW.value = AppState.weight;
+            if (inWa) inWa.value = AppState.waist;
+            if (inA) inA.value = AppState.age;
+            const editH = document.getElementById('editHeight');
+            const editW = document.getElementById('editWeight');
+            const editWa = document.getElementById('editWaist');
+            const editA = document.getElementById('editAge');
+            if (editH) editH.value = AppState.height;
+            if (editW) editW.value = AppState.weight;
+            if (editWa) editWa.value = AppState.waist;
+            if (editA) editA.value = AppState.age;
+
+            setGender(AppState.gender);
+            setActivityLevel(AppState.activityLevel);
+            setDeficitGoal(AppState.deficitGoal);
+            selectCalorieTier(AppState.calorieTier);
+            selectDay(AppState.selectedDay);
+          }
+        }
+      } catch (e) {
+        console.warn('Initial state restore fallback:', e);
+      }
+
+      // Initial calculations & renders
+      recalcBMI();
+      renderMealPlan();
+
+      // Notify Gemini Notebook Shim that app is fully ready
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+          window.notebookAppApi.notifyAppReady();
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>
